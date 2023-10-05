@@ -148,7 +148,8 @@ echo "Updating package repository and installing initial packages..."
 sudo dnf update -y
 sudo dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v22.0.2/drawio-x86_64-22.0.2.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://zoom.us/client/5.16.2.8828/zoom_x86_64.rpm
 sudo dnf install --best --allowerasing -y arj brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dnf-utils dolphin-megasync dpkg dropbox fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiskmark kernel-devel kernel-headers kget kid3 kleopatra krename krita krusader ksystemlog ktorrent lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lshw megasync microsoft-edge-stable mozilla-ublock-origin neofetch nextcloud-client nextcloud-client-dolphin nodejs-bash-language-server openssl-devel okteta perl pstoedit redhat-lsb-core snapper telegram-desktop tracker unace unrar vlc vlc-bittorrent vlc-extras xkill
-
+sudo dnf remove -y dragon virtualbox-guest-additions
+echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc
 
 # Check if the initial installation was successful
 if [ $? -eq 0 ]; then

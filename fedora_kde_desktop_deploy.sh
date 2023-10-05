@@ -17,28 +17,27 @@ sets["k3b"]="This set includes K3b and CD/DVD burning utilities"
 # Function to add repositories
 add_repositories() {
   echo "Adding repositories..."
-  echo "RPMFusion"
-  dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-  echo "Brave Browser"
+  echo "Installing RPMFusion..."
+  dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+  echo "Adding Brave Browser repository..."
   dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
   rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
-  echo "Microsoft VSCode and Edge"
+  echo "Adding Microsoft VSCode and Edge repositories..."
   rpm --import https://packages.microsoft.com/keys/microsoft.asc
   sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
   dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/edge
-  echo "Heroic Launcher"
+  echo "Adding Heroic Launcher repository..."
   dnf copr enable atim/heroic-games-launcher
-  echo "PyCharm Community"
+  echo "Adding PyCharm Community repository..."
   dnf copr enable phracek/PyCharm
-  echo "Google Chrome"
+  echo "Adding Google Chrome repository..."
   dnf config-manager --set-enabled google-chrome
-  echo "Steam - RPMFusion"
+  echo "Adding Steam (RPMFusion) repository..."
   dnf config-manager --set-enabled rpmfusion-nonfree-steam
-  echo "Nvidia Drivers - RPMFusion"
+  echo "Adding Nvidia Drivers (RPMFusion) repository..."
   dnf config-manager --set-enabled rpmfusion-nonfree-nvidia-driver
-  echo "Flathub"
+  echo "Adding Flathub..."
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  su -c "setsebool -P allow_execheap 1"
 }
 
 # Function to install a set of packages
@@ -77,7 +76,10 @@ install_packages() {
     echo "$set_name installation successful."
 
     # Run additional commands after set installation (if needed)
-    if [ "$set_name" == "virt" ]; then
+    if [ "$set_name" == "games" ]; then
+      echo "Completing game packages setup..."
+      su -c "setsebool -P allow_execheap 1"
+    elif [ "$set_name" == "virt" ]; then
       echo "Completing virtualization packages setup..."
       sudo usermod -aG vboxusers $USER
     elif [ "$set_name" == "k3b" ]; then
@@ -133,6 +135,9 @@ install_popcorn_time() {
 }
 
 # Running pre-requisite upgrade
+echo "Improving DNF performance..."
+echo -e "#Improve DNF download speed and performance\nmax_parallel_downloads=10\nfastestmirror=True\installonly_limit=2" >> /etc/dnf/dnf.conf
+echo "Running initial Fedora updates..."
 sudo dnf update -y
 
 # Add repositories and run commands before package selection
@@ -141,7 +146,9 @@ add_repositories
 # Initial installation
 echo "Updating package repository and installing initial packages..."
 sudo dnf update -y
-sudo dnf install --best --allowerasing -y arj brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dnf-utils dolphin-megasync dpkg dropbox fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiskmark kernel-devel kernel-headers kget kid3 kleopatra krename krita krusader ksystemlog ktorrent lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lshw megasync microsoft-edge-stable mozilla-ublock-origin neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl pstoedit redhat-lsb-core snapper telegram-desktop tracker unace unrar vlc vlc-bittorrent vlc-extras xkill
+sudo dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v22.0.2/drawio-x86_64-22.0.2.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://zoom.us/client/5.16.2.8828/zoom_x86_64.rpm
+sudo dnf install --best --allowerasing -y arj brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dnf-utils dolphin-megasync dpkg dropbox fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiskmark kernel-devel kernel-headers kget kid3 kleopatra krename krita krusader ksystemlog ktorrent lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lshw megasync microsoft-edge-stable mozilla-ublock-origin neofetch nextcloud-client nextcloud-client-dolphin nodejs-bash-language-server openssl-devel okteta perl pstoedit redhat-lsb-core snapper telegram-desktop tracker unace unrar vlc vlc-bittorrent vlc-extras xkill
+
 
 # Check if the initial installation was successful
 if [ $? -eq 0 ]; then

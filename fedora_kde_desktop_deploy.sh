@@ -93,7 +93,7 @@ install_packages() {
 
 # Function to install Flatpak apps
 install_flatpak_apps() {
-  read -p "Do you want to install Flatpak apps? (yes/no): " choice
+  read -p "Do you want to install Flatpak apps? (Y/N): " choice
   case "$choice" in
     [Yy]*)
       echo "Installing Flatpak apps..."
@@ -112,7 +112,7 @@ install_flatpak_apps() {
 
 # Function to install Popcorn Time
 install_popcorn_time() {
-  read -p "Do you want to install Popcorn Time? (yes/no): " choice
+  read -p "Do you want to install Popcorn Time? (Y/N): " choice
   case "$choice" in
     [Yy]*)
       echo "Installing Popcorn Time..."

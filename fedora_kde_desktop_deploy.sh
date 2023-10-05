@@ -136,7 +136,7 @@ install_popcorn_time() {
 
 # Running pre-requisite upgrade
 echo "Improving DNF performance..."
-echo -e "#Improve DNF download speed and performance\nmax_parallel_downloads=10\nfastestmirror=True\installonly_limit=2" >> /etc/dnf/dnf.conf
+echo -e "#Improve DNF download speed and performance\nmax_parallel_downloads=10\nfastestmirror=True\ninstallonly_limit=2" >> /etc/dnf/dnf.conf
 echo "Running initial Fedora updates..."
 sudo dnf update -y
 

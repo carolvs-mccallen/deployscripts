@@ -36,7 +36,6 @@ add_repositories() {
   sudo add-apt-repository ppa:atareao/telegram
   echo "Adding VirtualBox repository..."
   wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
-  sudo nano /etc/apt/sources.list.d/oracle-virtualbox.list
   echo -e "#Oracle VirtualBox\ndeb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian jammy contrib" > /etc/apt/sources.list.d/oracle-virtualbox.list
   echo "Adding Flathub..."
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo

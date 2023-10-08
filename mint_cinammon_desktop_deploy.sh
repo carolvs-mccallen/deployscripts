@@ -19,7 +19,7 @@ add_repositories() {
   echo "Adding repositories..."
   echo "Adding Brave Browser repository..."
   sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg  | sudo apt-key add -
-  echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+  echo -e "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
   echo "Adding GIMP PPA"
   sudo add-apt-repository ppa:ubuntuhandbook1/gimp
   echo "Adding LibreOffice PPA"
@@ -71,7 +71,7 @@ install_packages() {
 
   # Install the selected set of packages
   echo "Installing $set_name packages..."
-  sudo apt install --install-recommends "${packages[@]}"
+  sudo apt install --install-recommends -y "${packages[@]}"
 
   # Check if the installation was successful
   if [ $? -eq 0 ]; then
@@ -83,7 +83,7 @@ install_packages() {
       game-data-packager tyrian
       wget https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.9.2/heroic_2.9.2_amd64.deb
       sudo dpkg -i *.deb
-      apt install -f
+      apt install -f -y
       rm *.deb
     elif [ "$set_name" == "virt" ]; then
       echo "Completing virtualization packages setup..."
@@ -125,7 +125,7 @@ install_popcorn_time() {
       export PATH="$PATH:tmp"
       wget https://github.com/popcorn-official/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-amd64.deb
       dpkg -i Popcorn-Time-0.4.9-amd64.deb
-      apt install -f
+      apt install -f -y
       rm Popcorn-Time-0.4.9-amd64.deb
       ;;
     [Nn]*)
@@ -155,10 +155,10 @@ wget https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable
 wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
 wget https://zoom.us/client/5.16.2.8828/zoom_amd64.deb
 dpkg -i *.deb
-apt install -f
+apt install -f -y
 rm *.deb
-sudo apt install --install-recommends alien arj brave-browser cheese doublecmd-gtk eog eog-plugins epiphany-browser epiphany-browser-data evolution frei0r-plugins firefox-locale-es gimp gimp-data-extras gimp-help-common gimp-help-en gimp-help-es gnome-contacts gnome-mahjongg gnome-maps gnome-mines gnome-video-effects-frei0r gnome-weather gpa hashdeep hyphen-fi hyphen-ga hyphen-id kid3-qt lhasa libdvd-pkg libfprint-2-dev libfprint-2-doc libgegl-0.4-0 libgegl-common libmypaint-1.5-1 libmypaint-common libncurses5 libncurses5:i386 libpam-fprintd linux-generic-hwe-22.04 linux-headers-generic-hwe-22.04 linux-image-generic-hwe-22.04 malcontent-gui mint-meta-codecs nautilus-dropbox nemo-nextcloud nextcloud-desktop nextcloud-desktop-common nextcloud-desktop-doc nextcloud-desktop-l10n nfs-common openclipart-libreoffice openoffice.org-hyphenation pstoedit rar rpm rpm-i18n telegram-desktop traceroute uget unace unrar-free vlc xboxdrv
-sudo apt autoremove --purge celluloid* simple-scan* thunderbird*
+sudo apt install --install-recommends -y alien arj brave-browser cheese doublecmd-gtk eog eog-plugins epiphany-browser epiphany-browser-data evolution frei0r-plugins firefox-locale-es gimp gimp-data-extras gimp-help-common gimp-help-en gimp-help-es gnome-contacts gnome-mahjongg gnome-maps gnome-mines gnome-video-effects-frei0r gnome-weather gpa hashdeep hyphen-fi hyphen-ga hyphen-id kid3-qt lhasa libdvd-pkg libfprint-2-dev libfprint-2-doc libgegl-0.4-0 libgegl-common libmypaint-1.5-1 libmypaint-common libncurses5 libncurses5:i386 libpam-fprintd linux-generic-hwe-22.04 linux-headers-generic-hwe-22.04 linux-image-generic-hwe-22.04 malcontent-gui mint-meta-codecs nautilus-dropbox nemo-nextcloud nextcloud-desktop nextcloud-desktop-common nextcloud-desktop-doc nextcloud-desktop-l10n nfs-common openclipart-libreoffice openoffice.org-hyphenation pstoedit rar rpm rpm-i18n telegram-desktop traceroute uget unace unrar-free vlc xboxdrv
+sudo apt autoremove --purge -y celluloid* simple-scan* thunderbird*
 echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
 echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc
 

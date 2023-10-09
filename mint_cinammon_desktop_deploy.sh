@@ -139,7 +139,7 @@ install_popcorn_time() {
 # Running pre-requisite upgrade
 echo "Running initial Mint updates..."
 apt update
-apt full-upgrade
+apt full-upgrade -y
 
 # Add repositories and run commands before package selection
 add_repositories

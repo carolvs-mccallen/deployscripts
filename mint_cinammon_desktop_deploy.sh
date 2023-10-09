@@ -19,11 +19,11 @@ add_repositories() {
   echo "Adding repositories..."
   echo "Adding Brave Browser repository..."
   sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg  | sudo apt-key add -
-  echo -e "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+  echo -e "#Brave Browser\ndeb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" > /etc/apt/sources.list.d/brave-browser-release.list
   echo "Adding GIMP PPA"
-  sudo add-apt-repository ppa:ubuntuhandbook1/gimp
+  sudo add-apt-repository -y ppa:ubuntuhandbook1/gimp
   echo "Adding LibreOffice PPA"
-  sudo add-apt-repository ppa:libreoffice/ppa
+  sudo add-apt-repository -y ppa:libreoffice/ppa
   echo "Adding Microsoft VSCode and Edge repositories..."
   wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
@@ -33,7 +33,7 @@ add_repositories() {
   curl -s https://s3.eu-central-1.amazonaws.com/jetbrains-ppa/0xA6E8698A.pub.asc | gpg --dearmor | sudo tee /usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg > /dev/null
   echo "deb [signed-by=/usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg] http://jetbrains-ppa.s3-website.eu-central-1.amazonaws.com any main" | sudo tee /etc/apt/sources.list.d/jetbrains-ppa.list > /dev/null
   echo "Adding Telegram PPA"
-  sudo add-apt-repository ppa:atareao/telegram
+  sudo add-apt-repository -y ppa:atareao/telegram
   echo "Adding VirtualBox repository..."
   wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
   echo -e "#Oracle VirtualBox\ndeb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian jammy contrib" > /etc/apt/sources.list.d/oracle-virtualbox.list

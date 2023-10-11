@@ -18,29 +18,29 @@ sets["brasero"]="This set includes Brasero and CD/DVD burning utilities"
 add_repositories() {
   echo "Adding repositories..."
   echo "Adding Brave Browser repository..."
-  sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg  | sudo apt-key add -
+  curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg  | apt-key add -
   echo -e "#Brave Browser\ndeb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" > /etc/apt/sources.list.d/brave-browser-release.list
   echo "Adding GIMP PPA"
-  sudo add-apt-repository -y ppa:ubuntuhandbook1/gimp
+  add-apt-repository -y ppa:ubuntuhandbook1/gimp
   echo "Adding LibreOffice PPA"
-  sudo add-apt-repository -y ppa:libreoffice/ppa
+  add-apt-repository -y ppa:libreoffice/ppa
   echo "Adding Microsoft VSCode and Edge repositories..."
   wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-  sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-  sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+  install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+  sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
   rm -f packages.microsoft.gpg
   echo "Adding PyCharm Community repository..."
-  curl -s https://s3.eu-central-1.amazonaws.com/jetbrains-ppa/0xA6E8698A.pub.asc | gpg --dearmor | sudo tee /usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg > /dev/null
-  echo "deb [signed-by=/usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg] http://jetbrains-ppa.s3-website.eu-central-1.amazonaws.com any main" | sudo tee /etc/apt/sources.list.d/jetbrains-ppa.list > /dev/null
+  curl -s https://s3.eu-central-1.amazonaws.com/jetbrains-ppa/0xA6E8698A.pub.asc | gpg --dearmor | tee /usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg > /dev/null
+  echo "deb [signed-by=/usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg] http://jetbrains-ppa.s3-website.eu-central-1.amazonaws.com any main" | tee /etc/apt/sources.list.d/jetbrains-ppa.list > /dev/null
   echo "Adding Telegram PPA"
-  sudo add-apt-repository -y ppa:atareao/telegram
+  add-apt-repository -y ppa:atareao/telegram
   echo "Adding VirtualBox repository..."
-  wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
+  wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc |  gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
   echo -e "#Oracle VirtualBox\ndeb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian jammy contrib" > /etc/apt/sources.list.d/oracle-virtualbox.list
   echo "Adding Flathub..."
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  sudo apt update
-  sudo apt full-upgrade -y
+  apt update
+  apt full-upgrade -y
 }
 
 # Function to install a set of packages
@@ -72,7 +72,7 @@ install_packages() {
 
   # Install the selected set of packages
   echo "Installing $set_name packages..."
-  sudo apt install --install-recommends -y "${packages[@]}"
+  apt install --install-recommends -y "${packages[@]}"
 
   # Check if the installation was successful
   if [ $? -eq 0 ]; then
@@ -83,15 +83,15 @@ install_packages() {
       echo "Completing game packages setup..."
       game-data-packager tyrian
       wget https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.9.2/heroic_2.9.2_amd64.deb
-      sudo dpkg -i *.deb
+      dpkg -i *.deb
       apt install -f -y
       rm *.deb
     elif [ "$set_name" == "virt" ]; then
       echo "Completing virtualization packages setup..."
-      sudo usermod -aG vboxusers $USER
+      usermod -aG vboxusers $USER
     elif [ "$set_name" == "brasero" ]; then
       echo "Completing Brasero packages setup..."
-      sudo usermod -aG cdrom $USER
+      usermod -aG cdrom $USER
     fi
   else
     echo "$set_name installation failed."
@@ -158,8 +158,8 @@ wget https://zoom.us/client/5.16.2.8828/zoom_amd64.deb
 dpkg -i *.deb
 apt install -f -y
 rm *.deb
-sudo apt install --install-recommends -y alien arj brave-browser cheese doublecmd-gtk eog eog-plugins epiphany-browser epiphany-browser-data evolution frei0r-plugins firefox-locale-es gimp gimp-data-extras gimp-help-common gimp-help-en gimp-help-es gnome-contacts gnome-mahjongg gnome-maps gnome-mines gnome-video-effects-frei0r gnome-weather gpa hashdeep hyphen-fi hyphen-ga hyphen-id kid3-qt lhasa libdvd-pkg libfprint-2-dev libfprint-2-doc libgegl-0.4-0 libgegl-common libmypaint-1.5-1 libmypaint-common libncurses5 libncurses5:i386 libpam-fprintd linux-generic-hwe-22.04 linux-headers-generic-hwe-22.04 linux-image-generic-hwe-22.04 malcontent-gui mint-meta-codecs nautilus-dropbox nemo-nextcloud nextcloud-desktop nextcloud-desktop-common nextcloud-desktop-doc nextcloud-desktop-l10n nfs-common openclipart-libreoffice openoffice.org-hyphenation pstoedit rar rpm rpm-i18n telegram-desktop traceroute uget unace unrar-free vlc xboxdrv
-sudo apt autoremove --purge -y celluloid* simple-scan* thunderbird*
+apt install --install-recommends -y alien arj brave-browser cheese doublecmd-gtk eog eog-plugins epiphany-browser epiphany-browser-data evolution frei0r-plugins firefox-locale-es gimp gimp-data-extras gimp-help-common gimp-help-en gimp-help-es gnome-contacts gnome-mahjongg gnome-maps gnome-mines gnome-video-effects-frei0r gnome-weather gpa hashdeep hyphen-fi hyphen-ga hyphen-id kid3-qt lhasa libdvd-pkg libfprint-2-dev libfprint-2-doc libgegl-0.4-0 libgegl-common libmypaint-1.5-1 libmypaint-common libncurses5 libncurses5:i386 libpam-fprintd linux-generic-hwe-22.04 linux-headers-generic-hwe-22.04 linux-image-generic-hwe-22.04 malcontent-gui mint-meta-codecs nautilus-dropbox nemo-nextcloud nextcloud-desktop nextcloud-desktop-common nextcloud-desktop-doc nextcloud-desktop-l10n nfs-common openclipart-libreoffice openoffice.org-hyphenation pstoedit rar rpm rpm-i18n telegram-desktop traceroute uget unace unrar-free vlc xboxdrv
+apt autoremove --purge -y celluloid* simple-scan* thunderbird*
 echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
 echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc
 

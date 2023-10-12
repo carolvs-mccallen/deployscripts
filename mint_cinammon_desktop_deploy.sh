@@ -23,7 +23,7 @@ add_repositories() {
   echo "Adding GIMP PPA"
   add-apt-repository -y ppa:ubuntuhandbook1/gimp
   echo "Adding LibreOffice PPA"
-  add-apt-repository -y ppa:libreoffice/libreoffice-fresh
+  add-apt-repository -y ppa:libreoffice/libreoffice-still
   echo "Adding Microsoft VSCode and Edge repositories..."
   wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg

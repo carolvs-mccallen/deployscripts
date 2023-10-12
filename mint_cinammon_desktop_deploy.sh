@@ -159,6 +159,7 @@ dpkg -i *.deb
 apt install -f -y
 rm *.deb
 apt install --install-recommends -y alien arj brave-browser cheese doublecmd-gtk eog eog-plugins epiphany-browser epiphany-browser-data evolution frei0r-plugins firefox-locale-es gimp gimp-data-extras gimp-help-common gimp-help-en gimp-help-es gnome-contacts gnome-mahjongg gnome-maps gnome-mines gnome-video-effects-frei0r gnome-weather gpa hashdeep hyphen-fi hyphen-ga hyphen-id kid3-qt lhasa libdvd-pkg libfprint-2-dev libfprint-2-doc libgegl-0.4-0 libgegl-common libmypaint-1.5-1 libmypaint-common libncurses5 libncurses5:i386 libpam-fprintd linux-generic-hwe-22.04 linux-headers-generic-hwe-22.04 linux-image-generic-hwe-22.04 malcontent-gui mint-meta-codecs nautilus-dropbox nemo-nextcloud nextcloud-desktop nextcloud-desktop-common nextcloud-desktop-doc nextcloud-desktop-l10n nfs-common openclipart-libreoffice openoffice.org-hyphenation pstoedit rar rpm rpm-i18n telegram-desktop traceroute uget unace unrar-free vlc xboxdrv
+dpkg-reconfigure libdvd-pkg
 apt autoremove --purge -y celluloid* simple-scan* thunderbird*
 echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
 echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc

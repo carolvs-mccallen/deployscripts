@@ -104,7 +104,7 @@ install_flatpak_apps() {
   case "$choice" in
     [Yy]*)
       echo "Installing Flatpak apps..."
-      flatpak install flathub org.gtk.Gtk3theme.Mint-Y org.gtk.Gtk3theme.Mint-Y-Aqua org.gtk.Gtk3theme.Mint-Y-Blue org.gtk.Gtk3theme.Mint-Y-Brown org.gtk.Gtk3theme.Mint-Y-Dark org.gtk.Gtk3theme.Mint-Y-Darker org.gtk.Gtk3theme.Mint-Y-Dark-Aqua org.gtk.Gtk3theme.Mint-Y-Darker-Aqua org.gtk.Gtk3theme.Mint-Y-Dark-Blue org.gtk.Gtk3theme.Mint-Y-Darker-Blue org.gtk.Gtk3theme.Mint-Y-Dark-Brown org.gtk.Gtk3theme.Mint-Y-Darker-Brown org.gtk.Gtk3theme.Mint-Y-Dark-Grey org.gtk.Gtk3theme.Mint-Y-Darker-Grey org.gtk.Gtk3theme.Mint-Y-Dark-Orange org.gtk.Gtk3theme.Mint-Y-Darker-Orange org.gtk.Gtk3theme.Mint-Y-Dark-Pink org.gtk.Gtk3theme.Mint-Y-Darker-Pink org.gtk.Gtk3theme.Mint-Y-Dark-Purple org.gtk.Gtk3theme.Mint-Y-Darker-Purple org.gtk.Gtk3theme.Mint-Y-Dark-Red org.gtk.Gtk3theme.Mint-Y-Darker-Red org.gtk.Gtk3theme.Mint-Y-Dark-Sand org.gtk.Gtk3theme.Mint-Y-Darker-Sand org.gtk.Gtk3theme.Mint-Y-Dark-Teal org.gtk.Gtk3theme.Mint-Y-Darker-Teal org.gtk.Gtk3theme.Mint-Y-Grey org.gtk.Gtk3theme.Mint-Y-Orange org.gtk.Gtk3theme.Mint-Y-Pink org.gtk.Gtk3theme.Mint-Y-Purple org.gtk.Gtk3theme.Mint-Y-Red org.gtk.Gtk3theme.Mint-Y-Sand org.gtk.Gtk3theme.Mint-Y-Teal com.bitwarden.desktop com.discordapp.Discord com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.spotify.Client com.ktechpit.whatsie io.github.JaGoLi.ytdl_gui
+      flatpak install flathub -y org.gtk.Gtk3theme.Mint-Y org.gtk.Gtk3theme.Mint-Y-Aqua org.gtk.Gtk3theme.Mint-Y-Blue org.gtk.Gtk3theme.Mint-Y-Brown org.gtk.Gtk3theme.Mint-Y-Dark org.gtk.Gtk3theme.Mint-Y-Darker org.gtk.Gtk3theme.Mint-Y-Dark-Aqua org.gtk.Gtk3theme.Mint-Y-Darker-Aqua org.gtk.Gtk3theme.Mint-Y-Dark-Blue org.gtk.Gtk3theme.Mint-Y-Darker-Blue org.gtk.Gtk3theme.Mint-Y-Dark-Brown org.gtk.Gtk3theme.Mint-Y-Darker-Brown org.gtk.Gtk3theme.Mint-Y-Dark-Grey org.gtk.Gtk3theme.Mint-Y-Darker-Grey org.gtk.Gtk3theme.Mint-Y-Dark-Orange org.gtk.Gtk3theme.Mint-Y-Darker-Orange org.gtk.Gtk3theme.Mint-Y-Dark-Pink org.gtk.Gtk3theme.Mint-Y-Darker-Pink org.gtk.Gtk3theme.Mint-Y-Dark-Purple org.gtk.Gtk3theme.Mint-Y-Darker-Purple org.gtk.Gtk3theme.Mint-Y-Dark-Red org.gtk.Gtk3theme.Mint-Y-Darker-Red org.gtk.Gtk3theme.Mint-Y-Dark-Sand org.gtk.Gtk3theme.Mint-Y-Darker-Sand org.gtk.Gtk3theme.Mint-Y-Dark-Teal org.gtk.Gtk3theme.Mint-Y-Darker-Teal org.gtk.Gtk3theme.Mint-Y-Grey org.gtk.Gtk3theme.Mint-Y-Orange org.gtk.Gtk3theme.Mint-Y-Pink org.gtk.Gtk3theme.Mint-Y-Purple org.gtk.Gtk3theme.Mint-Y-Red org.gtk.Gtk3theme.Mint-Y-Sand org.gtk.Gtk3theme.Mint-Y-Teal com.bitwarden.desktop com.discordapp.Discord com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.spotify.Client com.ktechpit.whatsie io.github.JaGoLi.ytdl_gui
       echo "Applying automatic theme selection for Flatpak apps"
       flatpak override --filesystem=xdg-config/gtk-3.0:ro
       ;;
@@ -113,27 +113,6 @@ install_flatpak_apps() {
       ;;
     *)
       echo "Invalid choice. No Flatpak apps will be installed."
-      ;;
-  esac
-}
-
-# Function to install Popcorn Time
-install_popcorn_time() {
-  read -p "Do you want to install Popcorn Time? (Y/N): " choice
-  case "$choice" in
-    [Yy]*)
-      echo "Installing Popcorn Time..."
-      export PATH="$PATH:tmp"
-      wget https://github.com/popcorn-official/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-amd64.deb
-      dpkg -i Popcorn-Time-0.4.9-amd64.deb
-      apt install -f -y
-      rm Popcorn-Time-0.4.9-amd64.deb
-      ;;
-    [Nn]*)
-      echo "Popcorn Time will not be installed."
-      ;;
-    *)
-      echo "Invalid choice. Popcorn Time will not be installed."
       ;;
   esac
 }
@@ -153,6 +132,7 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 wget https://mega.nz/linux/repo/xUbuntu_22.04/amd64/megasync-xUbuntu_22.04_amd64.deb
 wget https://mega.nz/linux/repo/xUbuntu_22.04/amd64/nemo-megasync-xUbuntu_22.04_amd64.deb
 wget https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/microsoft-edge-stable_117.0.2045.55-1_amd64.deb
+wget https://github.com/popcorn-official/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-amd64.deb
 wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
 wget https://zoom.us/client/5.16.2.8828/zoom_amd64.deb
 dpkg -i *.deb
@@ -195,6 +175,3 @@ done
 
 # Install Flatpak apps
 install_flatpak_apps
-
-# Install Popcorn Time
-install_popcorn_time

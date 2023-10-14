@@ -11,7 +11,7 @@ declare -A sets
 sets["development"]="This set includes Notepadqq, PyCharm Community Edition, R and Wireshark."
 sets["games"]="This set includes open source games, Heroic Launcher for Epic/GOG/Amazon games, and Steam."
 sets["matroska"]="This set includes video editing utilities for multiple formats including Matroska"
-sets["virt"]="This set includes RedHat Virtualization via Qemu and VirtualBox"
+sets["virt"]="This set includes VirtualBox"
 sets["brasero"]="This set includes Brasero and CD/DVD burning utilities"
 
 # Function to add repositories

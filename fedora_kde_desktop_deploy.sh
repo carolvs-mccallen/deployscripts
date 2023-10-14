@@ -110,31 +110,6 @@ install_flatpak_apps() {
   esac
 }
 
-# Function to install Popcorn Time
-install_popcorn_time() {
-  read -p "Do you want to install Popcorn Time? (Y/N): " choice
-  case "$choice" in
-    [Yy]*)
-      echo "Installing Popcorn Time..."
-      export PATH="$PATH:tmp"
-      wget https://github.com/popcorn-time-ru/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-linux64.zip
-      mkdir /opt/popcorntime
-      unzip Popcorn-Time-0.4.9-linux64.zip -d /opt/popcorntime/
-      rm Popcorn-Time-0.4.9-linux64.zip
-      wget -O /opt/popcorntime/popcorn.png https://upload.wikimedia.org/wikipedia/commons/d/df/Pctlogo.png
-      ln -sf /opt/popcorntime/Popcorn-Time /usr/bin/Popcorn-Time
-      echo "Creating app list"
-      echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
-      ;;
-    [Nn]*)
-      echo "Popcorn Time will not be installed."
-      ;;
-    *)
-      echo "Invalid choice. Popcorn Time will not be installed."
-      ;;
-  esac
-}
-
 # Running pre-requisite upgrade
 echo "Improving DNF performance..."
 echo -e "#Improve DNF download speed and performance\nmax_parallel_downloads=10\nfastestmirror=True\ninstallonly_limit=2" >> /etc/dnf/dnf.conf
@@ -149,6 +124,15 @@ echo "Updating package repository and installing initial packages..."
 dnf update -y
 dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v22.0.2/drawio-x86_64-22.0.2.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/5.16.2.8828/zoom_x86_64.rpm
 dnf install --best --allowerasing -y arj brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dnf-utils dolphin-megasync dpkg dropbox falkon fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiskmark kernel-devel kernel-headers kget kid3 kleopatra krename krita krusader ksystemlog ktorrent lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lshw megasync microsoft-edge-stable mozilla-ublock-origin neofetch nextcloud-client nextcloud-client-dolphin nodejs-bash-language-server openssl-devel okteta perl pstoedit redhat-lsb-core snapper telegram-desktop tracker unace unrar vlc vlc-bittorrent vlc-extras xkill
+echo "Installing Popcorn Time..."
+wget https://github.com/popcorn-time-ru/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-linux64.zip
+mkdir /opt/popcorntime
+unzip Popcorn-Time-0.4.9-linux64.zip -d /opt/popcorntime/
+rm Popcorn-Time-0.4.9-linux64.zip
+wget -O /opt/popcorntime/popcorn.png https://upload.wikimedia.org/wikipedia/commons/d/df/Pctlogo.png
+ln -sf /opt/popcorntime/Popcorn-Time /usr/bin/Popcorn-Time
+echo "Creating app list"
+echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
 dnf remove -y dragon virtualbox-guest-additions
 echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc
 
@@ -183,6 +167,3 @@ done
 
 # Install Flatpak apps
 install_flatpak_apps
-
-# Install Popcorn Time
-install_popcorn_time

@@ -9,4 +9,5 @@ The idea is to run this script once after completing the initial distribution se
 Usage:
 
 chmod a+x script_name.sh
+
 sudo ./script_name.sh

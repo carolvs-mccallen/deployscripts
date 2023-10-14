@@ -81,7 +81,7 @@ install_packages() {
     # Run additional commands after set installation (if needed)
     if [ "$set_name" == "games" ]; then
       echo "Completing game packages setup..."
-      game-data-packager tyrian
+      wget https://raw.githubusercontent.com/carolvs-mccallen/testground/main/tyrian-data_68_all.deb
       wget https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.9.2/heroic_2.9.2_amd64.deb
       dpkg -i *.deb
       apt install -f -y

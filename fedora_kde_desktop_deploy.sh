@@ -27,9 +27,9 @@ add_repositories() {
   sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
   dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/edge
   echo "Adding Heroic Launcher repository..."
-  dnf copr enable atim/heroic-games-launcher
+  dnf copr enable -y atim/heroic-games-launcher
   echo "Adding PyCharm Community repository..."
-  dnf copr enable phracek/PyCharm
+  dnf copr enable -y phracek/PyCharm
   echo "Adding Google Chrome repository..."
   dnf config-manager --set-enabled google-chrome
   echo "Adding Steam (RPMFusion) repository..."
@@ -69,7 +69,7 @@ install_packages() {
 
   # Install the selected set of packages
   echo "Installing $set_name packages..."
-  dnf install --best --allowerasing -y "${packages[@]}"
+   dnf install --best --allowerasing -y "${packages[@]}"
 
   # Check if the installation was successful
   if [ $? -eq 0 ]; then
@@ -81,10 +81,10 @@ install_packages() {
       su -c "setsebool -P allow_execheap 1"
     elif [ "$set_name" == "virt" ]; then
       echo "Completing virtualization packages setup..."
-      usermod -aG vboxusers $USER
+       usermod -aG vboxusers $USER
     elif [ "$set_name" == "k3b" ]; then
       echo "Completing K3b packages setup..."
-      usermod -aG cdrom $USER
+       usermod -aG cdrom $USER
     fi
   else
     echo "$set_name installation failed."
@@ -97,7 +97,7 @@ install_flatpak_apps() {
   case "$choice" in
     [Yy]*)
       echo "Installing Flatpak apps..."
-      flatpak install flathub org.gtk.Gtk3theme.Breeze com.bitwarden.desktop com.discordapp.Discord com.github.opentyrian.OpenTyrian com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.spotify.Client com.ktechpit.whatsie io.github.JaGoLi.ytdl_gui
+      flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.bitwarden.desktop com.discordapp.Discord com.github.opentyrian.OpenTyrian com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.spotify.Client com.ktechpit.whatsie io.github.JaGoLi.ytdl_gui
       echo "Applying automatic theme selection for Flatpak apps"
       flatpak override --filesystem=xdg-config/gtk-3.0:ro
       ;;
@@ -148,7 +148,7 @@ add_repositories
 echo "Updating package repository and installing initial packages..."
 dnf update -y
 dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v22.0.2/drawio-x86_64-22.0.2.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/5.16.2.8828/zoom_x86_64.rpm
-dnf install --best --allowerasing -y arj brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dnf-utils dolphin-megasync dpkg dropbox fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiskmark kernel-devel kernel-headers kget kid3 kleopatra krename krita krusader ksystemlog ktorrent lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lshw megasync microsoft-edge-stable mozilla-ublock-origin neofetch nextcloud-client nextcloud-client-dolphin nodejs-bash-language-server openssl-devel okteta perl pstoedit redhat-lsb-core snapper telegram-desktop tracker unace unrar vlc vlc-bittorrent vlc-extras xkill
+dnf install --best --allowerasing -y arj brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dnf-utils dolphin-megasync dpkg dropbox falkon fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiskmark kernel-devel kernel-headers kget kid3 kleopatra krename krita krusader ksystemlog ktorrent lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lshw megasync microsoft-edge-stable mozilla-ublock-origin neofetch nextcloud-client nextcloud-client-dolphin nodejs-bash-language-server openssl-devel okteta perl pstoedit redhat-lsb-core snapper telegram-desktop tracker unace unrar vlc vlc-bittorrent vlc-extras xkill
 dnf remove -y dragon virtualbox-guest-additions
 echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc
 

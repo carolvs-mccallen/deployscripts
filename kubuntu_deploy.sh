@@ -111,12 +111,14 @@ install_flatpak_apps() {
   case "$choice" in
     [Yy]*)
       echo "Installing Flatpak apps..."
-      flatpak install flathub -y org.gtk.Gtk3theme.Breeze org.gtk.Gtk3theme.Breeze-Dark com.plexamp.Plexamp io.github.JaGoLi.ytdl_gui
+      flatpak install flathub -y org.gtk.Gtk3theme.Breeze org.gtk.Gtk3theme.Breeze-Dark com.plexamp.Plexamp tv.plex.PlexDesktop io.github.JaGoLi.ytdl_gui
       echo "Applying automatic theme selection for Flatpak apps"
       flatpak override --filesystem=xdg-config/gtk-3.0:ro
+      flatpak update
       echo "Installing Snap apps..."
       snap remove --purge firefox
-      snap install bitwarden discord plex-desktop red-app signal-desktop spotify whatsie
+      snap refresh
+      snap install bitwarden discord red-app signal-desktop spotify whatsie
       ;;
     [Nn]*)
       echo "No Flatpak apps will be installed."

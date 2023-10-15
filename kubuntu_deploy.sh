@@ -130,7 +130,7 @@ install_flatpak_apps() {
 # Running pre-requisite upgrade
 echo "Running initial Kubuntu updates..."
 apt update
-apt-get install --install-recommends -y curl flatpak exfatprogs libncurses5 libncurses5:i386 malcontent-gui neofetch plasma-discover-backend-flatpak
+apt-get install --install-recommends -y curl flatpak exfatprogs libncurses5 libncurses5:i386 make make-doc malcontent-gui neofetch plasma-discover-backend-flatpak
 apt full-upgrade -y
 
 # Add repositories and run commands before package selection

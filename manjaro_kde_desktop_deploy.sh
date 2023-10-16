@@ -96,7 +96,7 @@ add_repositories
 
 # Initial installation
 echo "Updating package repository and installing initial packages..."
-yes s | pacman -Sy arj bitwarden brave-browser btrfs-assistant btrfsmaintenance cabextract digikam discord discover dpkg falkon fprintd gimp gimp-help-es gimp-plugin-gmic gimp-nufraw qgit grub-btrfs gvfs-google hunspell-en_us hunspell-es_any hunspell-es_co innoextract kdiskmark kget kid3 kleopatra krename krita krita-plugin-gmic krusader ktorrent lhasa libfprint lshw nextcloud-client okteta pstoedit signal-desktop snapper snapper-gui spotify-launcher telegram-desktop unace unarj unrar xsane-gimp
+yes s | pacman -Sy akonadi-import-wizard arj bitwarden brave-browser btrfs-assistant btrfsmaintenance cabextract digikam discord discover dpkg falkon firefox-i18n-en-us firefox-i18n-es-mx fprintd gimp gimp-help-en gimp-help-es gimp-plugin-gmic qgit grub-btrfs gvfs-google hunspell-en_us hunspell-es_any hunspell-es_co hunspell-ex_mx innoextract kaddressbook kdiskmark kget kgpg kid3 kleopatra kmail kmail-account-wizard kmailtransport krename krita krita-plugin-gmic krusader ktorrent lhasa libfprint lshw man-pages-es nextcloud-client okteta pstoedit signal-desktop snapper snapper-gui spotify-launcher telegram-desktop unace unarj unrar
 echo "Installing Popcorn Time..."
 wget https://github.com/popcorn-time-ru/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-linux64.zip
 mkdir /opt/popcorntime
@@ -106,6 +106,7 @@ wget -O /opt/popcorntime/popcorn.png https://upload.wikimedia.org/wikipedia/comm
 ln -sf /opt/popcorntime/Popcorn-Time /usr/bin/Popcorn-Time
 echo "Creating app list"
 echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
+yes s | pacman -R skanlite
 echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc
 
 # Check if the initial installation was successful

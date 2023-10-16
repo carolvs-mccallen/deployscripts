@@ -47,7 +47,7 @@ install_packages() {
 
   case "$set_name" in
     "development")
-      packages=(code @development-tools pycharm-community pycharm-community-doc pycharm-community-plugins R rstudio-desktop wireshark)
+      packages=(code @development-tools pycharm-community pycharm-community-doc pycharm-community-plugins qgit R rstudio-desktop wireshark)
       ;;
     "games")
       packages=(astromenace frozen-bubble heroic-games-launcher-bin scummvm scummvm-data scummvm-tools steam supertux supertuxkart supertuxkart-data)
@@ -81,10 +81,10 @@ install_packages() {
       su -c "setsebool -P allow_execheap 1"
     elif [ "$set_name" == "virt" ]; then
       echo "Completing virtualization packages setup..."
-       usermod -aG vboxusers $USER
+      usermod -aG vboxusers $USER
     elif [ "$set_name" == "k3b" ]; then
       echo "Completing K3b packages setup..."
-       usermod -aG cdrom $USER
+      usermod -aG cdrom $USER
     fi
   else
     echo "$set_name installation failed."

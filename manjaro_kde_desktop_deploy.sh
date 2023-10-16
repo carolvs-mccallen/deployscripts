@@ -49,7 +49,7 @@ install_packages() {
 
   # Install the selected set of packages
   echo "Installing $set_name packages..."
-   yes s | pacman -Sy "${packages[@]}"
+   yes s | pacman -Sy --noconfirm "${packages[@]}"
 
   # Check if the installation was successful
   if [ $? -eq 0 ]; then
@@ -74,7 +74,7 @@ install_flatpak_apps() {
   case "$choice" in
     [Yy]*)
       echo "Installing Flatpak apps..."
-      flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.jgraph.drawio.desktop com.google.Chrome com.microsoft.Edge com.github.opentyrian.OpenTyrian com.plexamp.Plexamp tv.plex.PlexDesktop com.ktechpit.whatsie us.zoom.Zoom
+      flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.jgraph.drawio.desktop com.google.Chrome com.heroicgameslauncher.hgl com.microsoft.Edge com.github.opentyrian.OpenTyrian com.plexamp.Plexamp tv.plex.PlexDesktop com.ktechpit.whatsie us.zoom.Zoom
       echo "Applying automatic theme selection for Flatpak apps"
       flatpak override --filesystem=xdg-config/gtk-3.0:ro
       ;;

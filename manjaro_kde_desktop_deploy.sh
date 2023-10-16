@@ -96,7 +96,7 @@ add_repositories
 
 # Initial installation
 echo "Updating package repository and installing initial packages..."
-yes s | pacman -Sy akonadi-import-wizard arj bitwarden brave-browser btrfs-assistant btrfsmaintenance cabextract digikam discord discover dpkg falkon firefox-i18n-en-us firefox-i18n-es-mx fprintd gimp gimp-help-en gimp-help-es gimp-plugin-gmic qgit grub-btrfs gvfs-google hunspell-en_us hunspell-es_any hunspell-es_co hunspell-ex_mx innoextract kaddressbook kdiskmark kget kgpg kid3 kleopatra kmail kmail-account-wizard kmailtransport krename krita krita-plugin-gmic krusader ktorrent lhasa libfprint lshw man-pages-es nextcloud-client okteta pstoedit signal-desktop snapper snapper-gui spotify-launcher telegram-desktop unace unarj unrar
+yes s | pacman -Sy akonadi-import-wizard arj bitwarden brave-browser btrfs-assistant btrfsmaintenance cabextract digikam discord discover dpkg falkon firefox-i18n-en-us firefox-i18n-es-mx fprintd gimp gimp-help-en gimp-help-es gimp-plugin-gmic qgit grub-btrfs gvfs-google hyphen-en hyphen-es hunspell-en_us hunspell-es_any hunspell-es_co hunspell-es_mx innoextract kaddressbook kdiskmark kget kgpg kid3 kleopatra kmail kmail-account-wizard kmailtransport krename krita krita-plugin-gmic krusader ktorrent lhasa lib32-tcl libfprint libreoffice-extension-texmaths libreoffice-extension-writer2latex libreoffice-still-es lshw man-pages-es nextcloud-client okteta pstoedit signal-desktop snapper snapper-gui spotify-launcher tcl telegram-desktop tk unace unarj unrar
 echo "Installing Popcorn Time..."
 wget https://github.com/popcorn-time-ru/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-linux64.zip
 mkdir /opt/popcorntime

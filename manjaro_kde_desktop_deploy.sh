@@ -16,7 +16,8 @@ sets["k3b"]="This set includes K3b and CD/DVD burning utilities"
 
 # Function to add repositories
 add_repositories() {
-  echo "Adding MEGAsync repository...
+  echo "Adding repositories..."
+  echo "Adding MEGAsync repository..."
   echo -e "###REPO for MEGA###\n[DEB_Arch_Extra]\nSigLevel = Required TrustedOnly\nServer = https://mega.nz/linux/repo/Arch_Extra/x86_64/\n###END REPO for MEGA###" >> /etc/pacman.conf 
   echo "Adding Flathub..."
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -78,7 +79,7 @@ install_packages() {
 
 # Function to install Flatpak apps
 install_flatpak_apps() {
-  read -p "Do you want to install Flatpak apps? (Y/N): " choice
+  read -p "Do you want to install Flatpak and Snap apps? (Y/N): " choice
   case "$choice" in
     [Yy]*)
       echo "Installing Flatpak apps..."

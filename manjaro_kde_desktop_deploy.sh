@@ -16,6 +16,8 @@ sets["k3b"]="This set includes K3b and CD/DVD burning utilities"
 
 # Function to add repositories
 add_repositories() {
+  echo "Adding MEGAsync repository...
+  echo -e "###REPO for MEGA###\n[DEB_Arch_Extra]\nSigLevel = Required TrustedOnly\nServer = https://mega.nz/linux/repo/Arch_Extra/x86_64/\n###END REPO for MEGA###" >> /etc/pacman.conf 
   echo "Adding Flathub..."
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
@@ -27,7 +29,7 @@ install_packages() {
 
   case "$set_name" in
     "development")
-      packages=(code notepadqq pycharm-community-edition r wireshark-qt)
+      packages=(notepadqq pycharm-community-edition r wireshark-qt)
       ;;
     "games")
       packages=(astromenace libretro-scummvm linux-steam-integration scummvm scummvm-tools steam steam-native-runtime supertux supertuxkart)
@@ -56,7 +58,13 @@ install_packages() {
     echo "$set_name installation successful."
 
     # Run additional commands after set installation (if needed)
-    if [ "$set_name" == "virt" ]; then
+    if [ "$set_name" == "games" ]; then
+      echo "Completing development packages setup..."
+      pamac build --no-confirm visual-studio-code-bin
+    elif [ "$set_name" == "games" ]; then
+      echo "Completing games packages setup..."
+      pamac build --no-confirm heroic-games-launcher-bin opentyrian
+    elif [ "$set_name" == "virt" ]; then
       echo "Completing virtualization packages setup..."
       usermod -aG vboxusers $USER
     elif [ "$set_name" == "k3b" ]; then
@@ -74,7 +82,7 @@ install_flatpak_apps() {
   case "$choice" in
     [Yy]*)
       echo "Installing Flatpak apps..."
-      flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.jgraph.drawio.desktop com.google.Chrome com.microsoft.Edge com.github.opentyrian.OpenTyrian com.plexamp.Plexamp tv.plex.PlexDesktop com.ktechpit.whatsie us.zoom.Zoom
+      flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.plexamp.Plexamp tv.plex.PlexDesktop com.ktechpit.whatsie
       echo "Applying automatic theme selection for Flatpak apps"
       flatpak override --filesystem=xdg-config/gtk-3.0:ro
       ;;
@@ -96,16 +104,14 @@ add_repositories
 
 # Initial installation
 echo "Updating package repository and installing initial packages..."
-yes s | pacman -Sy akonadi-import-wizard arj bitwarden brave-browser btrfs-assistant btrfsmaintenance cabextract digikam discord discover dpkg falkon firefox-i18n-en-us firefox-i18n-es-mx fprintd gimp gimp-help-en gimp-help-es gimp-plugin-gmic qgit grub-btrfs gvfs-google hyphen-en hyphen-es hunspell-en_us hunspell-es_any hunspell-es_co hunspell-es_mx innoextract kaddressbook kdiskmark kget kgpg kid3 kleopatra kmail kmail-account-wizard kmailtransport krename krita krita-plugin-gmic krusader ktorrent lhasa lib32-tcl libfprint libreoffice-still-es lshw man-pages-es nextcloud-client okteta pstoedit signal-desktop snapper snapper-gui spotify-launcher tcl telegram-desktop tk unace unarj unrar
-echo "Installing Popcorn Time..."
-wget https://github.com/popcorn-time-ru/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-linux64.zip
-mkdir /opt/popcorntime
-unzip Popcorn-Time-0.4.9-linux64.zip -d /opt/popcorntime/
-rm Popcorn-Time-0.4.9-linux64.zip
-wget -O /opt/popcorntime/popcorn.png https://upload.wikimedia.org/wikipedia/commons/d/df/Pctlogo.png
-ln -sf /opt/popcorntime/Popcorn-Time /usr/bin/Popcorn-Time
-echo "Creating app list"
-echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
+yes s | pacman -Sy akonadi-import-wizard arj bitwarden brave-browser btrfs-assistant btrfsmaintenance cabextract digikam discord discover dolphin-megasync dpkg falkon firefox-i18n-en-us firefox-i18n-es-mx fprintd gimp gimp-help-en gimp-help-es gimp-plugin-gmic qgit grub-btrfs gvfs-google hyphen-en hyphen-es hunspell-en_us hunspell-es_any hunspell-es_co hunspell-es_mx innoextract kaddressbook kdiskmark kget kgpg kid3 kleopatra kmail kmail-account-wizard kmailtransport krename krita krita-plugin-gmic krusader ktorrent lhasa lib32-tcl libfprint libreoffice-still-es lshw man-pages-es megasync nextcloud-client okteta pstoedit signal-desktop snapper snapper-gui spotify-launcher tcl telegram-desktop tk unace unarj unrar
+wget https://zoom.us/client/latest/zoom_x86_64.pkg.tar.xz
+yes s | pacman -U *.xz
+rm *.xz
+pamac build --no-confirm drawio-desktop-bin google-chrome microsoft-edge-stable-bin popcorntime-bin teamviewer
+teamviewer --daemon enable
+systemctl enable teamviewerd.service
+systemctl start teamviewerd.service
 yes s | pacman -R skanlite
 echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc
 

@@ -56,7 +56,7 @@ install_packages() {
     echo "$set_name installation successful."
 
     # Run additional commands after set installation (if needed)
-    if [ "$set_name" == "games" ]; then
+    if [ "$set_name" == "development" ]; then
       echo "Completing development packages setup..."
       pamac build --no-confirm visual-studio-code-bin
     elif [ "$set_name" == "games" ]; then

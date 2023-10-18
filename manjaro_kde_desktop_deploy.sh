@@ -102,10 +102,14 @@ add_repositories
 
 # Initial installation
 echo "Updating package repository and installing initial packages..."
-yes s | pacman -Sy akonadi-import-wizard arj bitwarden brave-browser btrfs-assistant btrfsmaintenance cabextract digikam discord discover dpkg falkon firefox-i18n-en-us firefox-i18n-es-mx fprintd gimp gimp-help-en gimp-help-es gimp-plugin-gmic qgit grub-btrfs gvfs-google hyphen-en hyphen-es hunspell-en_us hunspell-es_any hunspell-es_co hunspell-es_mx innoextract kaddressbook kdiskmark kget kgpg kid3 kleopatra kmail kmail-account-wizard kmailtransport krename krita krita-plugin-gmic krusader ktorrent lhasa lib32-tcl libfprint libreoffice-still-es lshw man-pages-es nextcloud-client okteta pstoedit signal-desktop snapper snapper-gui spotify-launcher tcl telegram-desktop tk unace unarj unrar
-yes s | pacman -U https://zoom.us/client/latest/zoom_x86_64.pkg.tar.xz
-yes s | pacman -U https://mega.nz/linux/repo/Arch_Extra/x86_64/megasync-x86_64.pkg.tar.zst
-yes s | pacman -U https://mega.nz/linux/repo/Arch_Extra/x86_64/dolphin-megasync-x86_64.pkg.tar.zst
+yes s | pacman -Sy akonadi-import-wizard arj bitwarden brave-browser btrfs-assistant btrfsmaintenance cabextract digikam discord discover dpkg falkon firefox-i18n-en-us firefox-i18n-es-mx fprintd gimp gimp-help-en gimp-help-es gimp-plugin-gmic qgit grub-btrfs gvfs-google hyphen-en hyphen-es hunspell-en_us hunspell-es_any hunspell-es_co hunspell-es_mx innoextract kaddressbook kdiskmark kget kgpg kid3 kleopatra kmail kmail-account-wizard kmailtransport krename krita krita-plugin-gmic krusader ktorrent lhasa lib32-tcl libfprint libreoffice-still-es linux65-headers lshw man-pages-es nextcloud-client okteta pstoedit signal-desktop snapper snapper-gui spotify-launcher tcl telegram-desktop tk unace unarj unrar
+wget https://zoom.us/client/latest/zoom_x86_64.pkg.tar.xz
+wget https://mega.nz/linux/repo/Arch_Extra/x86_64/megasync-x86_64.pkg.tar.zst
+wget https://mega.nz/linux/repo/Arch_Extra/x86_64/dolphin-megasync-x86_64.pkg.tar.zst
+yes s | pacman -U zoom_x86_64.pkg.tar.xz
+yes s | pacman -U megasync-x86_64.pkg.tar.zst
+yes s | pacman -U dolphin-megasync-x86_64.pkg.tar.zst
+rm *.tar.*
 pamac build --no-confirm drawio-desktop-bin google-chrome microsoft-edge-stable-bin popcorntime-bin teamviewer
 teamviewer --daemon enable
 systemctl enable teamviewerd.service

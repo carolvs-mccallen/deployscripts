@@ -106,9 +106,8 @@ yes s | pacman -Sy akonadi-import-wizard arj bitwarden brave-browser btrfs-assis
 wget https://zoom.us/client/latest/zoom_x86_64.pkg.tar.xz
 wget https://mega.nz/linux/repo/Arch_Extra/x86_64/megasync-x86_64.pkg.tar.zst
 wget https://mega.nz/linux/repo/Arch_Extra/x86_64/dolphin-megasync-x86_64.pkg.tar.zst
-yes s | pacman -U zoom_x86_64.pkg.tar.xz
-yes s | pacman -U megasync-x86_64.pkg.tar.zst
-yes s | pacman -U dolphin-megasync-x86_64.pkg.tar.zst
+yes s | pacman -U *.tar.*
+yes s | pacman -Syyu
 rm *.tar.*
 pamac build --no-confirm drawio-desktop-bin google-chrome microsoft-edge-stable-bin popcorntime-bin teamviewer
 teamviewer --daemon enable

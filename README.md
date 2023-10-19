@@ -6,6 +6,13 @@ I will try to cover the more widely known distributions, but I tend to stray awa
 
 The idea is to run this script once after completing the initial distribution setup and once completed reboot your system and have a fully functional desktop.
 
+List of supported distributions so far:
+
+Fedora KDE spin https://fedoraproject.org/spins/kde/download/
+Kubuntu https://kubuntu.org/getkubuntu/
+Linux Mint (Edge version recommended) https://linuxmint.com/download.php
+Manjaro KDE https://manjaro.org/download/
+
 Usage:
 
 chmod a+x script_name.sh

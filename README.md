@@ -1,4 +1,4 @@
-The purpose of this repo is to have a set of scripts with my own personal spin on packages that should be on a distro for a functional end-user desktop experience covering some basics.
+The purpose of this repo is to have a set of scripts with my own personal spin on packages that should be on a distro for a functional end-user desktop experience covering some basics like Development, CD/DVD Burning software, Games (Open Source and Commercial), Video Encoding and Virtualization.
 
 You're welcome to copy, modify and/or improve my scripts. Please provide feedback on the modifications or improvement.
 

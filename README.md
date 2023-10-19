@@ -9,8 +9,11 @@ The idea is to run this script once after completing the initial distribution se
 List of supported distributions so far:
 
 Fedora KDE spin https://fedoraproject.org/spins/kde/download/
+
 Kubuntu https://kubuntu.org/getkubuntu/
+
 Linux Mint (Edge version recommended) https://linuxmint.com/download.php
+
 Manjaro KDE https://manjaro.org/download/
 
 Usage:

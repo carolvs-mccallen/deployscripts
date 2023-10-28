@@ -154,6 +154,7 @@ rm *.deb
 apt install --install-recommends -y alien arj brave-browser cifs-utils digikam dolphin-nextcloud falkon firefox firefox-locale-en firefox-locale-es fonts-lyx frei0r-plugins gimp gimp-data gimp-data-extras gimp-help-common gimp-help-en gimp-help-es hashdeep hunspell-en-au hunspell-en-ca hunspell-en-gb hunspell-en-za hunspell-es hyphen-en-ca hyphen-en-gb hyphen-en-us hyphen-es kaddressbook kamoso kget kgpg kid3 kio-gdrive kleopatra kolourpaint kompare krename krita krita-l10n krusader language-pack-es lhasa libavcodec-extra libdvd-pkg libfprint-2-2 libfprint-2-dev libfprint-2-doc libgegl-0.4-0 libgexiv2-2 libotr5 libpam-fprintd libreoffice-help-en-gb libreoffice-help-en-us libreoffice-help-es libreoffice-l10n-en-gb libreoffice-l10n-en-za libreoffice-l10n-es libreoffice-style-oxygen mythes-en-au mythes-en-us mythes-es nautilus-dropbox net-tools nfs-common openclipart-libreoffice openoffice.org-hyphenation  pstoedit rar rpm rpm-i18n scdaemon steam telegram thunderbird-locale-en thunderbird-locale-es traceroute ubuntu-restricted-extras unace unrar-free vlc wspanish xboxdrv
 dpkg-reconfigure libdvd-pkg
 apt autoremove --purge -y skanlite xterm
+snap remove --purge firefox
 apt update
 apt full-upgrade -y
 echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc

@@ -12,6 +12,8 @@ Fedora KDE spin https://fedoraproject.org/spins/kde/download/
 
 Kubuntu https://kubuntu.org/getkubuntu/
 
+**Supported versions only: Kubuntu 22.04.3 and Kubuntu 23.04. Many PPAs still don't have support for 23.10
+
 Linux Mint (Edge version recommended) https://linuxmint.com/download.php
 
 Manjaro KDE https://manjaro.org/download/

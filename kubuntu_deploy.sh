@@ -17,8 +17,8 @@ sets["k3b"]="This set includes K3b and CD/DVD burning utilities"
 # Function to add repositories
 add_repositories() {
   echo "Adding repositories..."
-  echo "Pre-installing curl"
-  apt install --install-recommends -y curl
+  echo "Pre-installing curl and Flatpak"
+  apt install --install-recommends -y curl flatpak kde-config-flatpak plasma-discover-backend-flatpak
   echo "Adding Brave Browser repository..."
   curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg  | apt-key add -
   echo -e "#Brave Browser\ndeb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" > /etc/apt/sources.list.d/brave-browser-release.list

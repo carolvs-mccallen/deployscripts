@@ -30,7 +30,7 @@ install_packages() {
       packages=(notepadqq pycharm-community-edition r wireshark-qt)
       ;;
     "games")
-      packages=(astromenace libretro-scummvm linux-steam-integration scummvm scummvm-tools steam steam-native-runtime supertux supertuxkart)
+      packages=(astromenace libretro-scummvm linux-steam-integration lutris scummvm scummvm-tools steam steam-native-runtime supertux supertuxkart)
       ;;
     "matroska")
       packages=(handbrake mediainfo mediainfo-gui mkvtoolnix-gui)

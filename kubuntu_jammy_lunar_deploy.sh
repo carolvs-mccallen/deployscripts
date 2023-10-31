@@ -90,6 +90,7 @@ install_packages() {
       echo "Completing game packages setup..."
       wget https://raw.githubusercontent.com/carolvs-mccallen/testground/main/tyrian-data_68_all.deb
       wget https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.9.2/heroic_2.9.2_amd64.deb
+      wget https://github.com/lutris/lutris/releases/download/v0.5.14/lutris_0.5.14_all.deb
       dpkg -i *.deb
       apt install -f -y
       rm *.deb

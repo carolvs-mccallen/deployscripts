@@ -50,7 +50,7 @@ install_packages() {
       packages=(code @development-tools pycharm-community pycharm-community-doc pycharm-community-plugins qgit R rstudio-desktop wireshark)
       ;;
     "games")
-      packages=(astromenace frozen-bubble heroic-games-launcher-bin scummvm scummvm-data scummvm-tools steam supertux supertuxkart supertuxkart-data)
+      packages=(astromenace frozen-bubble heroic-games-launcher-bin lutris scummvm scummvm-data scummvm-tools steam supertux supertuxkart supertuxkart-data)
       ;;
     "matroska")
       packages=(handbrake handbrake-gui mediainfo-gui mkvtoolnix-gui)

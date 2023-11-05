@@ -39,6 +39,11 @@ add_repositories() {
   echo "Adding PyCharm Community repository..."
   curl -s https://s3.eu-central-1.amazonaws.com/jetbrains-ppa/0xA6E8698A.pub.asc | gpg --dearmor | tee /usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg > /dev/null
   echo "deb [signed-by=/usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg] http://jetbrains-ppa.s3-website.eu-central-1.amazonaws.com any main" | tee /etc/apt/sources.list.d/jetbrains-ppa.list > /dev/null
+  echo "Adding Signal repository..."
+  wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+  cat signal-desktop-keyring.gpg | sudo tee /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+  echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' | tee /etc/apt/sources.list.d/signal-xenial.list
+  rm -f signal-desktop-keyring.gpg
   echo "Adding Telegram PPA"
   add-apt-repository -y ppa:atareao/telegram
   echo "Adding VirtualBox repository..."
@@ -119,7 +124,7 @@ install_flatpak_apps() {
       echo "Installing Snap apps..."
       snap remove --purge firefox
       snap refresh
-      snap install bitwarden discord red-app signal-desktop spotify whatsie
+      snap install bitwarden discord red-app spotify whatsie
       ;;
     [Nn]*)
       echo "No Flatpak apps will be installed."
@@ -152,7 +157,7 @@ wget https://zoom.us/client/5.16.2.8828/zoom_amd64.deb
 dpkg -i *.deb
 apt install -f -y
 rm *.deb
-apt install --install-recommends -y alien arj brave-browser cifs-utils digikam dolphin-nextcloud falkon firefox firefox-locale-en firefox-locale-es fonts-lyx frei0r-plugins gimp gimp-data gimp-data-extras gimp-help-common gimp-help-en gimp-help-es hashdeep hunspell-en-au hunspell-en-ca hunspell-en-gb hunspell-en-za hunspell-es hyphen-en-ca hyphen-en-gb hyphen-en-us hyphen-es kaddressbook kamoso kget kgpg kid3 kio-gdrive kleopatra kolourpaint kompare krename krita krita-l10n krusader language-pack-es lhasa libavcodec-extra libdvd-pkg libfprint-2-2 libfprint-2-dev libfprint-2-doc libgegl-0.4-0 libgexiv2-2 libotr5 libpam-fprintd libreoffice-help-en-gb libreoffice-help-en-us libreoffice-help-es libreoffice-l10n-en-gb libreoffice-l10n-en-za libreoffice-l10n-es libreoffice-style-oxygen mythes-en-au mythes-en-us mythes-es nautilus-dropbox net-tools nfs-common openclipart-libreoffice openoffice.org-hyphenation  pstoedit rar rpm rpm-i18n scdaemon steam telegram thunderbird-locale-en thunderbird-locale-es traceroute ubuntu-restricted-extras unace unrar-free vlc wspanish xboxdrv
+apt install --install-recommends -y alien arj brave-browser cifs-utils digikam dolphin-nextcloud falkon firefox firefox-locale-en firefox-locale-es fonts-lyx frei0r-plugins gimp gimp-data gimp-data-extras gimp-help-common gimp-help-en gimp-help-es hashdeep hunspell-en-au hunspell-en-ca hunspell-en-gb hunspell-en-za hunspell-es hyphen-en-ca hyphen-en-gb hyphen-en-us hyphen-es kaddressbook kamoso kget kgpg kid3 kio-gdrive kleopatra kolourpaint kompare krename krita krita-l10n krusader language-pack-es lhasa libavcodec-extra libdvd-pkg libfprint-2-2 libfprint-2-dev libfprint-2-doc libgegl-0.4-0 libgexiv2-2 libotr5 libpam-fprintd libreoffice-help-en-gb libreoffice-help-en-us libreoffice-help-es libreoffice-l10n-en-gb libreoffice-l10n-en-za libreoffice-l10n-es libreoffice-style-oxygen mythes-en-au mythes-en-us mythes-es nautilus-dropbox net-tools nfs-common openclipart-libreoffice openoffice.org-hyphenation pstoedit rar rpm rpm-i18n scdaemon signal-desktop steam telegram thunderbird-locale-en thunderbird-locale-es traceroute ubuntu-restricted-extras unace unrar-free vlc wspanish xboxdrv
 dpkg-reconfigure libdvd-pkg
 apt autoremove --purge -y skanlite xterm
 snap remove --purge firefox

@@ -129,7 +129,7 @@ wget https://github.com/popcorn-time-ru/popcorn-desktop/releases/download/v0.4.9
 mkdir /opt/popcorntime
 unzip Popcorn-Time-0.4.9-linux64.zip -d /opt/popcorntime/
 rm Popcorn-Time-0.4.9-linux64.zip
-wget -O /opt/popcorntime/popcorn.png https://upload.wikimedia.org/wikipedia/commons/d/df/Pctlogo.png
+wget -O /opt/popcorntime/popcorn.png https://github.com/carolvs-mccallen/testground/blob/623e2d1e9a2efb7820b9338760ed143fe3debe2e/icon.png
 ln -sf /opt/popcorntime/Popcorn-Time /usr/bin/Popcorn-Time
 echo "Creating app list"
 echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop

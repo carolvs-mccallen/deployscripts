@@ -26,6 +26,8 @@ add_repositories() {
   echo -e "Package: firefox*\nPin: release o=LP-PPA-mozillateam\nPin-Priority: 501" > /etc/apt/preferences.d/mozillateamppa
   echo "Adding GIMP PPA"
   add-apt-repository -y ppa:ubuntuhandbook1/gimp
+  echo "Adding Git PPA"
+  add-apt-repository -y ppa:git-core/ppa
   echo "Adding Kubuntu Backports PPA"
   add-apt-repository -y ppa:kubuntu-ppa/backports
   add-apt-repository -y ppa:kubuntu-ppa/backports-extra

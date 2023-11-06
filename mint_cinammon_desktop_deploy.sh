@@ -22,6 +22,8 @@ add_repositories() {
   echo -e "#Brave Browser\ndeb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" > /etc/apt/sources.list.d/brave-browser-release.list
   echo "Adding GIMP PPA"
   add-apt-repository -y ppa:ubuntuhandbook1/gimp
+  echo "Adding Git PPA"
+  add-apt-repository -y ppa:git-core/ppa
   echo "Adding LibreOffice PPA"
   add-apt-repository -y ppa:libreoffice/libreoffice-still
   echo "Adding Microsoft VSCode and Edge repositories..."

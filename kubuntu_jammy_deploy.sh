@@ -104,8 +104,11 @@ install_packages() {
     elif [ "$set_name" == "virt" ]; then
       echo "Completing virtualization packages setup..."
       usermod -aG vboxusers $USER
-    elif [ "$set_name" == "brasero" ]; then
-      echo "Completing Brasero packages setup..."
+    elif [ "$set_name" == "development" ]; then
+      echo "Completing development packages setup..."
+      snap install kommit
+    elif [ "$set_name" == "k3b" ]; then
+      echo "Completing K3b packages setup..."
       usermod -aG cdrom $USER
     fi
   else

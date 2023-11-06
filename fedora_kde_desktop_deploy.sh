@@ -47,7 +47,7 @@ install_packages() {
 
   case "$set_name" in
     "development")
-      packages=(code @development-tools pycharm-community pycharm-community-doc pycharm-community-plugins qgit R rstudio-desktop wireshark)
+      packages=(code @development-tools kommit pycharm-community pycharm-community-doc pycharm-community-plugins R rstudio-desktop wireshark)
       ;;
     "games")
       packages=(astromenace frozen-bubble heroic-games-launcher-bin lutris scummvm scummvm-data scummvm-tools steam supertux supertuxkart supertuxkart-data)

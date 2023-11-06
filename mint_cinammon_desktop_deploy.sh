@@ -57,7 +57,7 @@ install_packages() {
 
   case "$set_name" in
     "development")
-      packages=(bless code libclang-dev libssl-dev libxml2-dev meld notepadqq pycharm-community r-base wireshark wireshark-common wireshark-doc wireshark-gtk)
+      packages=(bless code giggle libclang-dev libssl-dev libxml2-dev meld notepadqq pycharm-community r-base wireshark wireshark-common wireshark-doc wireshark-gtk)
       ;;
     "games")
       packages=(aisleriot astromenace chromium-bsu frozen-bubble lgc-pg lgogdownloader opentyrian scummvm scummvm-data scummvm-tools steam supertux supertuxkart supertuxkart-data)

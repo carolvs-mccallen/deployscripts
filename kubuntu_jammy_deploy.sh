@@ -129,7 +129,7 @@ install_flatpak_apps() {
       echo "Installing Snap apps..."
       snap remove --purge firefox
       snap refresh
-      snap install bitwarden discord red-app spotify whatsie
+      snap install bitwarden discord red-app spotify whatsapp-for-linux
       ;;
     [Nn]*)
       echo "No Flatpak apps will be installed."

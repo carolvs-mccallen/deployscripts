@@ -80,7 +80,7 @@ install_flatpak_apps() {
   case "$choice" in
     [Yy]*)
       echo "Installing Flatpak apps..."
-      flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.github.opentyrian.OpenTyrian com.plexamp.Plexamp tv.plex.PlexDesktop com.ktechpit.whatsie
+      flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.github.opentyrian.OpenTyrian com.plexamp.Plexamp tv.plex.PlexDesktop com.github.eneshecan.WhatsAppForLinux
       echo "Applying automatic theme selection for Flatpak apps"
       flatpak override --filesystem=xdg-config/gtk-3.0:ro
       ;;

@@ -103,7 +103,7 @@ add_repositories
 # Initial installation
 echo "Updating package repository and installing initial packages..."
 yes s | pacman -Sy akonadi-import-wizard arj bitwarden brave-browser btrfs-assistant btrfsmaintenance cabextract digikam discord discover dpkg falkon firefox-i18n-en-us firefox-i18n-es-mx fprintd gimp gimp-help-en gimp-help-es gimp-plugin-gmic grub-btrfs gvfs-google hyphen-en hyphen-es hunspell-en_us hunspell-es_any hunspell-es_co hunspell-es_mx innoextract kaddressbook kdiskmark kget kgpg kid3 kleopatra kmail kmail-account-wizard kmailtransport krename krita krita-plugin-gmic krusader ktorrent lhasa lib32-tcl libfprint libreoffice-still-es linux65-headers lshw man-pages-es nextcloud-client okteta pstoedit signal-desktop snapper snapper-gui spotify-launcher tcl telegram-desktop tk unace unarj unrar
-pamac build --no-confirm drawio-desktop-bin dolphin-megasync-bin google-chrome megasync-bin microsoft-edge-stable-bin popcorntime-bin slack teamviewer webex-bin zoom
+pamac build --no-confirm drawio-desktop-bin dolphin-megasync-bin google-chrome megasync-bin microsoft-edge-stable-bin popcorntime-bin slack-desktop teamviewer webex-bin zoom
 teamviewer --daemon enable
 systemctl enable teamviewerd.service
 systemctl start teamviewerd.service

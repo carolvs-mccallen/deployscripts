@@ -48,7 +48,7 @@ add_repositories
 echo "Updating package repository and installing initial packages..."
 dnf update -y
 dnf install -y https://downloads.slack-edge.com/releases/linux/4.35.126/prod/x64/slack-4.35.126-0.1.el8.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/5.16.2.8828/zoom_x86_64.rpm
-dnf install --best --allowerasing -y arj cabextract code @development-tools dnf-utils dpkg fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry gitg htop hunspell-es info innoextract lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lzma mozilla-ublock-origin neofetch nodejs-bash-language-server perl pstoedit pycharm-community pycharm-community-doc pycharm-community-plugins redhat-lsb-core thunderbird unace unrar wireshark xkill
+dnf install --best --allowerasing -y arj cabextract code @development-tools dnf-utils dpkg file-roller fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry gitg htop hunspell-es info innoextract lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lzma mozilla-ublock-origin neofetch nodejs-bash-language-server perl pstoedit pycharm-community pycharm-community-doc pycharm-community-plugins redhat-lsb-core thunderbird unace unrar wireshark xkill
 
 # Check if the initial installation was successful
 if [ $? -eq 0 ]; then

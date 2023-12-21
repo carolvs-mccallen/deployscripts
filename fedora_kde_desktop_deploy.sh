@@ -28,6 +28,8 @@ add_repositories() {
   dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/edge
   echo "Adding Heroic Launcher repository..."
   dnf copr enable -y atim/heroic-games-launcher
+  echo "Adding Slack repository..."
+  dnf copr enable -y jdoss/slack-repo
   echo "Adding PyCharm Community repository..."
   dnf copr enable -y phracek/PyCharm
   echo "Adding Google Chrome repository..."
@@ -115,6 +117,7 @@ echo "Improving DNF performance..."
 echo -e "#Improve DNF download speed and performance\nmax_parallel_downloads=10\nfastestmirror=True\ninstallonly_limit=2" >> /etc/dnf/dnf.conf
 echo "Running initial Fedora updates..."
 dnf update -y
+dnf install -y slack-repo
 
 # Add repositories and run commands before package selection
 add_repositories
@@ -122,8 +125,8 @@ add_repositories
 # Initial installation
 echo "Updating package repository and installing initial packages..."
 dnf update -y
-dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v22.0.2/drawio-x86_64-22.0.2.rpm https://github.com/displaylink-rpm/displaylink-rpm/releases/download/v5.8.0/fedora-38-displaylink-1.14.1-1.x86_64.rpm https://downloads.slack-edge.com/releases/linux/4.35.126/prod/x64/slack-4.35.126-0.1.el8.x86_64.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/5.16.2.8828/zoom_x86_64.rpm
-dnf install --best --allowerasing -y arj brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dnf-utils dolphin-megasync dpkg dropbox falkon fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiff3 kdiskmark kernel-devel kernel-headers kget kid3 kleopatra krename krita krusader ksystemlog ktorrent lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lshw lzma megasync microsoft-edge-stable mozilla-ublock-origin neofetch nextcloud-client nextcloud-client-dolphin nodejs-bash-language-server openssl-devel okteta perl pstoedit python3-dnf-plugin-snapper redhat-lsb-core snapper telegram-desktop thunderbird tracker unace unrar vlc vlc-bittorrent vlc-extras xkill
+dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v22.0.2/drawio-x86_64-22.0.2.rpm https://github.com/displaylink-rpm/displaylink-rpm/releases/download/v5.8.0/fedora-38-displaylink-1.14.1-1.x86_64.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/5.16.2.8828/zoom_x86_64.rpm
+dnf install --best --allowerasing -y arj brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dnf-utils dolphin-megasync dpkg dropbox falkon fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiff3 kdiskmark kernel-devel kernel-headers kget kid3 kleopatra krename krita krusader ksystemlog ktorrent lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lshw lzma megasync microsoft-edge-stable mozilla-ublock-origin neofetch nextcloud-client nextcloud-client-dolphin nodejs-bash-language-server openssl-devel okteta perl pstoedit python3-dnf-plugin-snapper redhat-lsb-core slack snapper telegram-desktop thunderbird tracker unace unrar vlc vlc-bittorrent vlc-extras xkill
 echo "Installing Popcorn Time..."
 wget https://github.com/popcorn-time-ru/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-linux64.zip
 mkdir /opt/popcorntime

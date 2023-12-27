@@ -29,6 +29,7 @@ add_repositories() {
   echo "Adding Heroic Launcher repository..."
   dnf copr enable -y atim/heroic-games-launcher
   echo "Adding Slack repository..."
+  rpm --import https://slack.com/gpg/slack_pubkey_20230710.gpg
   dnf copr enable -y jdoss/slack-repo
   echo "Adding PyCharm Community repository..."
   dnf copr enable -y phracek/PyCharm
@@ -117,10 +118,10 @@ echo "Improving DNF performance..."
 echo -e "#Improve DNF download speed and performance\nmax_parallel_downloads=10\nfastestmirror=True\ninstallonly_limit=2" >> /etc/dnf/dnf.conf
 echo "Running initial Fedora updates..."
 dnf update -y
-dnf install -y slack-repo
 
 # Add repositories and run commands before package selection
 add_repositories
+dnf install --nogpgcheck -y slack-repo
 
 # Initial installation
 echo "Updating package repository and installing initial packages..."

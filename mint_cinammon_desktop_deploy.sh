@@ -91,7 +91,6 @@ install_packages() {
       wget https://raw.githubusercontent.com/carolvs-mccallen/testground/main/tyrian-data_68_all.deb
       wget https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.9.2/heroic_2.9.2_amd64.deb
       wget https://github.com/lutris/lutris/releases/download/v0.5.14/lutris_0.5.14_all.deb
-      wget https://downloads.slack-edge.com/releases/linux/4.35.126/prod/x64/slack-desktop-4.35.126-amd64.deb
       dpkg -i *.deb
       apt install -f -y
       rm *.deb
@@ -142,6 +141,7 @@ wget https://mega.nz/linux/repo/xUbuntu_22.04/amd64/megasync-xUbuntu_22.04_amd64
 wget https://mega.nz/linux/repo/xUbuntu_22.04/amd64/nemo-megasync-xUbuntu_22.04_amd64.deb
 wget https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/microsoft-edge-stable_117.0.2045.55-1_amd64.deb
 wget https://github.com/popcorn-official/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-amd64.deb
+wget https://downloads.slack-edge.com/releases/linux/4.35.131/prod/x64/slack-desktop-4.35.131-amd64.deb
 wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
 wget https://zoom.us/client/5.16.2.8828/zoom_amd64.deb
 dpkg -i *.deb

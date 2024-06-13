@@ -25,7 +25,7 @@ add_repositories() {
   echo "Adding Git PPA"
   add-apt-repository -y ppa:git-core/ppa
   echo "Adding LibreOffice PPA"
-  add-apt-repository -y ppa:libreoffice/libreoffice-still
+  add-apt-repository -y ppa:libreoffice/ppa
   echo "Adding Microsoft repositories..."
   wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg

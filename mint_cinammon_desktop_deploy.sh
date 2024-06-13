@@ -26,10 +26,13 @@ add_repositories() {
   add-apt-repository -y ppa:git-core/ppa
   echo "Adding LibreOffice PPA"
   add-apt-repository -y ppa:libreoffice/libreoffice-still
-  echo "Adding Microsoft VSCode and Edge repositories..."
+  echo "Adding Microsoft repositories..."
   wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+  curl -sLS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg
+  chmod go+r /etc/apt/keyrings/microsoft.gpg
   sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+  echo "Types: deb\nURIs: https://packages.microsoft.com/repos/azure-cli/\nSuites: jammy\nComponents: main\nArchitectures: $(dpkg --print-architecture)\nSigned-by: /etc/apt/keyrings/microsoft.gpg" | sudo tee /etc/apt/sources.list.d/azure-cli.sources
   rm -f packages.microsoft.gpg
   echo "Adding PyCharm Community repository..."
   curl -s https://s3.eu-central-1.amazonaws.com/jetbrains-ppa/0xA6E8698A.pub.asc | gpg --dearmor | tee /usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg > /dev/null
@@ -89,8 +92,8 @@ install_packages() {
     if [ "$set_name" == "games" ]; then
       echo "Completing game packages setup..."
       wget https://raw.githubusercontent.com/carolvs-mccallen/testground/main/tyrian-data_68_all.deb
-      wget https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.9.2/heroic_2.9.2_amd64.deb
-      wget https://github.com/lutris/lutris/releases/download/v0.5.14/lutris_0.5.14_all.deb
+      wget https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.14.1/heroic_2.14.1_amd64.deb
+      wget https://github.com/lutris/lutris/releases/download/v0.5.17/lutris_0.5.17_all.deb
       dpkg -i *.deb
       apt install -f -y
       rm *.deb
@@ -135,23 +138,23 @@ add_repositories
 
 # Initial installation
 echo "Updating package repository and installing initial packages..."
-wget https://github.com/jgraph/drawio-desktop/releases/download/v22.0.2/drawio-amd64-22.0.2.deb
+wget https://github.com/jgraph/drawio-desktop/releases/download/v24.5.3/drawio-arm64-24.5.3.deb
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 wget https://mega.nz/linux/repo/xUbuntu_22.04/amd64/megasync-xUbuntu_22.04_amd64.deb
 wget https://mega.nz/linux/repo/xUbuntu_22.04/amd64/nemo-megasync-xUbuntu_22.04_amd64.deb
-wget https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/microsoft-edge-stable_117.0.2045.55-1_amd64.deb
-wget https://github.com/popcorn-official/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-amd64.deb
-wget https://downloads.slack-edge.com/releases/linux/4.35.131/prod/x64/slack-desktop-4.35.131-amd64.deb
+wget https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/microsoft-edge-stable_125.0.2535.92-1_amd64.deb
+wget https://github.com/popcorn-official/popcorn-desktop/releases/download/v0.5.1/Popcorn-Time-0.5.1-amd64.deb
+wget https://downloads.slack-edge.com/desktop-releases/linux/x64/4.38.125/slack-desktop-4.38.125-amd64.deb
 wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
-wget https://zoom.us/client/5.16.2.8828/zoom_amd64.deb
+wget https://zoom.us/client/latest/zoom_amd64.deb
 dpkg -i *.deb
 apt install -f -y
 rm *.deb
-apt install --install-recommends -y alien arj brave-browser cheese doublecmd-gtk eog eog-plugins epiphany-browser epiphany-browser-data evolution frei0r-plugins firefox-locale-es gimp gimp-data-extras gimp-help-common gimp-help-en gimp-help-es git git-cvs git-daemon-run git-doc git-email git-gui git-mediawiki git-svn gitk gnome-contacts gnome-mahjongg gnome-maps gnome-mines gnome-video-effects-frei0r gnome-weather gpa hashdeep hyphen-es hyphen-fi hyphen-ga hyphen-id kid3-qt language-pack-es language-pack-gnome-es lhasa libdvd-pkg libfprint-2-dev libfprint-2-doc libgegl-0.4-0 libgegl-common libmypaint-1.5-1 libmypaint-common libncurses5 libncurses5:i386 libpam-fprintd linux-generic-hwe-22.04 linux-headers-generic-hwe-22.04 linux-image-generic-hwe-22.04 malcontent-gui mint-meta-codecs mythes-es nautilus-dropbox nemo-nextcloud nextcloud-desktop nextcloud-desktop-common nextcloud-desktop-doc nextcloud-desktop-l10n nfs-common openclipart-libreoffice openoffice.org-hyphenation pstoedit rar rpm rpm-i18n signal-desktop telegram-desktop traceroute uget unace unrar-free vlc xboxdrv
+apt install --install-recommends -y alien apt-transport-https arj azure-cli brave-browser cheese doublecmd-gtk eog eog-plugins epiphany-browser epiphany-browser-data evolution frei0r-plugins firefox-locale-es gimp gimp-data-extras gimp-help-common gimp-help-en gimp-help-es git git-cvs git-daemon-run git-doc git-email git-gui git-mediawiki git-svn gitk gnome-contacts gnome-mahjongg gnome-maps gnome-mines gnome-video-effects-frei0r gnome-weather gpa hashdeep hyphen-es hyphen-fi hyphen-ga hyphen-id kid3-qt language-pack-es language-pack-gnome-es lhasa libdvd-pkg libfprint-2-dev libfprint-2-doc libgegl-0.4-0 libgegl-common libmypaint-1.5-1 libmypaint-common libncurses5 libncurses5:i386 libpam-fprintd linux-generic-hwe-22.04 linux-headers-generic-hwe-22.04 linux-image-generic-hwe-22.04 malcontent-gui mint-meta-codecs mythes-es nautilus-dropbox nemo-nextcloud nextcloud-desktop nextcloud-desktop-common nextcloud-desktop-doc nextcloud-desktop-l10n nfs-common openclipart-libreoffice openoffice.org-hyphenation pstoedit rar rpm rpm-i18n signal-desktop telegram-desktop traceroute uget unace unrar-free vim vlc xboxdrv
 dpkg-reconfigure libdvd-pkg
 apt autoremove --purge -y celluloid* simple-scan* thunderbird*
 echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
-echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc
+#echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc
 
 # Check if the initial installation was successful
 if [ $? -eq 0 ]; then

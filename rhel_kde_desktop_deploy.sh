@@ -19,6 +19,9 @@ manage_subscription() {
   echo "Subscription management complete."
 }
 
+# Capture the output of the logname command
+USER=$(logname)
+
 # Function to add repositories
 add_repositories() {
   echo "Adding repositories..."
@@ -31,7 +34,7 @@ add_repositories() {
   dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
   echo "Adding AMD Radeon GPU repository..."
   dnf install -y https://repo.radeon.com/amdgpu-install/6.1.2/rhel/9.4/amdgpu-install-6.1.60102-1.el9.noarch.rpm
-  usermod -a -G render,video $USER
+  usermod -aG render,video $USER
   echo "Adding Brave Browser repository..."
   rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
   dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
@@ -139,6 +142,7 @@ echo "Running initial RHEL updates..."
 dnf update -y
 
 # Initial installation
+echo "Installing software for user: $USER"
 echo "Updating package repository and installing initial packages..."
 dnf update -y
 dnf groupinstall -y "KDE Plasma Workspaces" "Aplicaciones KDE" "base-x" "VideoLAN Client"
@@ -146,7 +150,7 @@ systemctl disable gdm
 systemctl enable sddm
 dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v24.6.4/drawio-x86_64-24.6.4.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm
 dnf install --best --allowerasing -y arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg google-chrome-stable htop innoextract kate kamoso kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent libcurl-devel libxml2-devel lzma microsoft-edge-stable neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl pstoedit thunderbird tracker unrar vim-enhanced xkill
-flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.spotify.Client org.telegram.desktop
+flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.slack.Slack com.spotify.Client org.telegram.desktop
 echo "Applying automatic theme selection for Flatpak apps"
 flatpak override --filesystem=xdg-config/gtk-3.0:ro
 echo "Installing Popcorn Time..."
@@ -159,7 +163,7 @@ ln -sf /opt/popcorntime/Popcorn-Time /usr/bin/Popcorn-Time
 echo "Creating app list"
 echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
 dnf remove -y dragon virtualbox-guest-additions open-vm-tools*
-#echo -e "# Starts terminal with neofetch at the top\nneofetch" >> /home/$USER/.bashrc
+echo -e "# Starts terminal with neofetch at the top\nneofetch" >> /home/$USER/.bashrc
 
 # Check if the initial installation was successful
 if [ $? -eq 0 ]; then

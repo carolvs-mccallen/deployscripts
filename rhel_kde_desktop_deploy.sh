@@ -48,6 +48,7 @@ add_repositories() {
   dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/edge
   echo "Adding NVIDIA repository..."
   dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
+  curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | tee /etc/yum.repos.d/nvidia-container-toolkit.repo
   echo "Adding PyCharm Community repository..."
   dnf copr enable -y phracek/PyCharm
   echo "Adding Flathub..."
@@ -75,7 +76,7 @@ install_packages() {
 
   case "$set_name" in
     "nvidia")
-      packages=(cuda-toolkit-12-5)
+      packages=(cuda-toolkit-12-5 nvidia-container-toolkit)
       ;;
     "radeon")
       packages=(amdgpu-dkms rocm)

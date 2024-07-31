@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # Check if the script is run as root (sudo)
 if [ "$EUID" -ne 0 ]; then
   echo "Please run this script with sudo."
@@ -16,19 +15,9 @@ echo
 manage_subscription() {
   echo "Managing subscription for $username..."
   # This takes the collected username and password for RHEL subscription and enables it.
-  subscription-manager register --username $username --password $password --auto-attach
+  subscription-manager register --username "$username" --password "$password" --auto-attach
   echo "Subscription management complete."
 }
-
-# Associative array to store set names and explanations
-declare -A sets
-sets["nvidia"]="This set includes NVIDIA drivers and CUDA drivers (Games and IA)"
-sets["radeon"]="This set includes AMD Radeon software (Games and IA)"
-sets["development"]="This set includes common development tools, PyCharm Community Edition, R and Wireshark."
-sets["games"]="This set includes open source games, Heroic Launcher for Epic/GOG/Amazon games, and Steam."
-sets["matroska"]="This set includes video editing utilities for multiple formats including Matroska"
-sets["virt"]="This set includes RedHat Virtualization via Qemu and VirtualBox"
-sets["k3b"]="This set includes K3b and CD/DVD burning utilities"
 
 # Function to add repositories
 add_repositories() {
@@ -41,7 +30,7 @@ add_repositories() {
   dnf install --nogpgcheck -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
   dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
   echo "Adding AMD Radeon GPU repository..."
-  dnf install https://repo.radeon.com/amdgpu-install/6.1.2/rhel/9.4/amdgpu-install-6.1.60102-1.el9.noarch.rpm
+  dnf install -y https://repo.radeon.com/amdgpu-install/6.1.2/rhel/9.4/amdgpu-install-6.1.60102-1.el9.noarch.rpm
   usermod -a -G render,video $USER
   echo "Adding Brave Browser repository..."
   rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
@@ -62,6 +51,20 @@ add_repositories() {
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
+# Execute the subscription management and repository addition functions
+manage_subscription
+add_repositories
+
+# Associative array to store set names and explanations
+declare -A sets
+sets["nvidia"]="This set includes NVIDIA drivers and CUDA drivers (Games and IA)"
+sets["radeon"]="This set includes AMD Radeon software (Games and IA)"
+sets["development"]="This set includes common development tools, PyCharm Community Edition, R and Wireshark."
+sets["games"]="This set includes open source games, Heroic Launcher for Epic/GOG/Amazon games, and Steam."
+sets["matroska"]="This set includes video editing utilities for multiple formats including Matroska"
+sets["virt"]="This set includes RedHat Virtualization via Qemu and VirtualBox"
+sets["k3b"]="This set includes K3b and CD/DVD burning utilities"
+
 # Function to install a set of packages
 install_packages() {
   local set_name="$1"
@@ -69,7 +72,7 @@ install_packages() {
 
   case "$set_name" in
     "nvidia")
-      packages=(akmod-nvidia cuda-toolkit-12-5 xorg-x11-drv-nvidia-cuda)
+      packages=(cuda-toolkit-12-5)
       ;;
     "radeon")
       packages=(amdgpu-dkms rocm)
@@ -97,7 +100,7 @@ install_packages() {
 
   # Install the selected set of packages
   echo "Installing $set_name packages..."
-   dnf install --best --allowerasing -y "${packages[@]}"
+  dnf install --best --allowerasing -y "${packages[@]}"
 
   # Check if the installation was successful
   if [ $? -eq 0 ]; then
@@ -143,7 +146,7 @@ systemctl disable gdm
 systemctl enable sddm
 dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v24.6.4/drawio-x86_64-24.6.4.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm
 dnf install --best --allowerasing -y arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg google-chrome-stable htop innoextract kate kamoso kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent libcurl-devel libxml2-devel lzma microsoft-edge-stable neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl pstoedit thunderbird tracker unrar vim-enhanced xkill
-flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.spotify.Clientorg.telegram.desktop
+flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.spotify.Client org.telegram.desktop
 echo "Applying automatic theme selection for Flatpak apps"
 flatpak override --filesystem=xdg-config/gtk-3.0:ro
 echo "Installing Popcorn Time..."
@@ -156,7 +159,7 @@ ln -sf /opt/popcorntime/Popcorn-Time /usr/bin/Popcorn-Time
 echo "Creating app list"
 echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
 dnf remove -y dragon virtualbox-guest-additions open-vm-tools*
-echo -e "# Starts terminal with neofetch at the top\nneofetch" >> /home/$USER/.bashrc
+#echo -e "# Starts terminal with neofetch at the top\nneofetch" >> /home/$USER/.bashrc
 
 # Check if the initial installation was successful
 if [ $? -eq 0 ]; then

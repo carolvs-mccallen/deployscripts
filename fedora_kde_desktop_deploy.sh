@@ -6,6 +6,9 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+# Capture the output of the logname command
+USER=$(logname)
+
 # Associative array to store set names and explanations
 declare -A sets
 sets["development"]="This set includes common development tools, PyCharm Community Edition, RStudio and Wireshark."
@@ -24,7 +27,7 @@ add_repositories() {
   rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
   echo "Adding Microsoft VSCode and Edge repositories..."
   rpm --import https://packages.microsoft.com/keys/microsoft.asc
-  sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+  dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/vscode
   dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/edge
   echo "Adding Heroic Launcher repository..."
   dnf copr enable -y atim/heroic-games-launcher
@@ -124,21 +127,22 @@ add_repositories
 dnf install --nogpgcheck -y slack-repo
 
 # Initial installation
+echo "Installing software for user: $USER"
 echo "Updating package repository and installing initial packages..."
 dnf update -y
-dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v24.5.3/drawio-x86_64-24.5.3.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm
+dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v24.7.8/drawio-x86_64-24.7.8.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm
 dnf install --best --allowerasing -y arj awesome-vim-colorschemes azure-cli brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dnf-utils dolphin-megasync dpkg dropbox falkon fprintd-devel gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiff3 kdiskmark kernel-devel kernel-headers kget kid3 kleopatra krename krita krusader ksystemlog ktorrent lha libcurl-devel libreoffice-langpack-es libreoffice-help-es libfprint-devel libxml2-devel lshw lzma megasync microsoft-edge-stable mozilla-ublock-origin neofetch nextcloud-client nextcloud-client-dolphin nodejs-bash-language-server openssl-devel okteta perl pstoedit python3-dnf-plugin-snapper redhat-lsb-core slack snapper telegram-desktop thunderbird tracker unace unrar vim-enhanced vlc vlc-bittorrent vlc-extras xkill
 echo "Installing Popcorn Time..."
-wget https://github.com/popcorn-time-ru/popcorn-desktop/releases/download/v0.4.9/Popcorn-Time-0.4.9-linux64.zip
+wget https://github.com/popcorn-official/popcorn-desktop/releases/download/v0.5.1/Popcorn-Time-0.5.1-linux64.zip
 mkdir /opt/popcorntime
-unzip Popcorn-Time-0.4.9-linux64.zip -d /opt/popcorntime/
-rm Popcorn-Time-0.4.9-linux64.zip
+unzip Popcorn-Time-0.5.1-linux64.zip -d /opt/popcorntime/
+rm Popcorn-Time-0.5.1-linux64.zip
 wget -O /opt/popcorntime/popcorn.png https://github.com/carolvs-mccallen/testground/blob/main/icon.png?raw=true
 ln -sf /opt/popcorntime/Popcorn-Time /usr/bin/Popcorn-Time
 echo "Creating app list"
 echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
 dnf remove -y dragon virtualbox-guest-additions open-vm-tools* kmail
-echo -e "# Starts terminal with neofetch at the top\nneofetch" >> ~/.bashrc
+echo -e "# Starts terminal with neofetch at the top\nneofetch" >> /home/$USER/.bashrc
 
 # Check if the initial installation was successful
 if [ $? -eq 0 ]; then

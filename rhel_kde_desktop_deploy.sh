@@ -76,7 +76,7 @@ install_packages() {
 
   case "$set_name" in
     "nvidia")
-      packages=(cuda-toolkit-12-5 nvidia-container-toolkit)
+      packages=(akmod-nvidia cuda-toolkit-12-6 nvidia-container-toolkit)
       ;;
     "radeon")
       packages=(amdgpu-dkms rocm)
@@ -113,7 +113,7 @@ install_packages() {
     # Run additional commands after set installation (if needed)
     if [ "$set_name" == "nvidia" ]; then
       echo "Completing NVIDIA packages setup..."
-      dnf module install -y nvidia-driver:latest-dkms
+      dnf -y module install nvidia-driver:open-dkms
     elif  [ "$set_name" == "development" ]; then
       echo "Completing development packages setup..."
       flatpak install -y flathub org.kde.kommit

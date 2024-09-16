@@ -76,7 +76,7 @@ install_packages() {
 
   case "$set_name" in
     "nvidia")
-      packages=(cuda-toolkit-12-5 nvidia-container-toolkit)
+      packages=(akmod-nvidia cuda-toolkit nvidia-container-toolkit nvidia-gds)
       ;;
     "radeon")
       packages=(amdgpu-dkms rocm)
@@ -113,7 +113,7 @@ install_packages() {
     # Run additional commands after set installation (if needed)
     if [ "$set_name" == "nvidia" ]; then
       echo "Completing NVIDIA packages setup..."
-      dnf module install -y nvidia-driver:latest-dkms
+      dnf -y module install nvidia-driver:latest-dkms
     elif  [ "$set_name" == "development" ]; then
       echo "Completing development packages setup..."
       flatpak install -y flathub org.kde.kommit
@@ -147,11 +147,11 @@ echo "Installing software for user: $USER"
 echo "Updating package repository and installing initial packages..."
 dnf update -y
 dnf groupinstall -y "KDE Plasma Workspaces" "Aplicaciones KDE" "base-x" "VideoLAN Client"
-systemctl disable gdm
-systemctl enable sddm
+# systemctl disable gdm
+# systemctl enable sddm
 dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v24.7.8/drawio-x86_64-24.7.8.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm
-dnf install --best --allowerasing -y arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg google-chrome-stable htop innoextract kate kamoso kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent libcurl-devel libxml2-devel lzma microsoft-edge-stable neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl podman-docker pstoedit python3-pip thunderbird tracker unrar vim-enhanced xkill
-flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.slack.Slack com.spotify.Client org.telegram.desktop
+dnf install --best --allowerasing -y arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg gcc-go gnupg2-smime golang-bin google-chrome-stable htop innoextract kate kamoso kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent libcurl-devel libxml2-devel lzma microsoft-edge-stable neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl podman-docker pstoedit python3-pip thunderbird tracker unrar vim-enhanced xkill
+flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync md.obsidian.Obsidian com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.slack.Slack com.spotify.Client org.telegram.desktop
 echo "Applying automatic theme selection for Flatpak apps"
 flatpak override --filesystem=xdg-config/gtk-3.0:ro
 echo "Installing Popcorn Time..."

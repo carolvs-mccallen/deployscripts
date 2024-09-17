@@ -146,7 +146,7 @@ dnf update -y
 echo "Installing software for user: $USER"
 echo "Updating package repository and installing initial packages..."
 dnf update -y
-dnf groupinstall -y "KDE Plasma Workspaces" "Aplicaciones KDE" "base-x" "VideoLAN Client"
+dnf groupinstall -y "KDE Plasma Workspaces" "KDE Applications" "base-x" "VideoLAN Client"
 # systemctl disable gdm
 # systemctl enable sddm
 dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v24.7.8/drawio-x86_64-24.7.8.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm

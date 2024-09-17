@@ -22,6 +22,13 @@ manage_subscription() {
 # Capture the output of the logname command
 USER=$(logname)
 
+# Prompt user to select GPU type
+echo "Please select your GPU:"
+echo "1) NVIDIA"
+echo "2) AMD Radeon"
+echo "3) Skip GPU installation"
+read -p "Enter your choice [1-3]: " gpu_choice
+
 # Function to add repositories
 add_repositories() {
   echo "Adding repositories..."
@@ -32,9 +39,6 @@ add_repositories() {
   dnf install -y https://www.elrepo.org/elrepo-release-9.el9.elrepo.noarch.rpm
   dnf install --nogpgcheck -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm
   dnf install --nogpgcheck -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$(rpm -E %rhel).noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$(rpm -E %rhel).noarch.rpm
-  echo "Adding AMD Radeon GPU repository..."
-  dnf install -y https://repo.radeon.com/amdgpu-install/6.1.2/rhel/9.4/amdgpu-install-6.1.60102-1.el9.noarch.rpm
-  usermod -aG render,video $USER
   echo "Adding Brave Browser repository..."
   rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
   dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
@@ -46,23 +50,46 @@ add_repositories() {
   rpm --import https://packages.microsoft.com/keys/microsoft.asc
   dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/vscode
   dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/edge
-  echo "Adding NVIDIA repository..."
-  dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
-  curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | tee /etc/yum.repos.d/nvidia-container-toolkit.repo
   echo "Adding PyCharm Community repository..."
   dnf copr enable -y phracek/PyCharm
   echo "Adding Flathub..."
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
+# Function to install GPU drivers
+install_gpu_drivers() {
+  if [ "$gpu_choice" -eq 1 ]; then
+    echo "Installing NVIDIA drivers and CUDA..."
+    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
+    curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+    dnf -y module install --best --allowerasing nvidia-driver:latest-dkms
+    dnf -y install cuda-toolkit nvidia-container-toolkit nvidia-gds
+    echo "NVIDIA drivers and CUDA installed successfully."
+
+  elif [ "$gpu_choice" -eq 2 ]; then
+    echo "Installing AMD Radeon drivers..."
+    dnf -y install https://repo.radeon.com/amdgpu-install/6.1.2/rhel/9.4/amdgpu-install-6.1.60102-1.el9.noarch.rpm
+    dnf -y install --best --allowerasing amdgpu-dkms rocm
+    usermod -aG render,video $USER
+    echo "AMD Radeon drivers installed successfully."
+
+  elif [ "$gpu_choice" -eq 3 ]; then
+    echo "Skipping GPU installation."
+  else
+    echo "Invalid choice. Exiting."
+    exit 1
+  fi
+}
+
 # Execute the subscription management and repository addition functions
 manage_subscription
 add_repositories
 
+# Run the GPU driver installation
+install_gpu_drivers
+
 # Associative array to store set names and explanations
 declare -A sets
-sets["nvidia"]="This set includes NVIDIA drivers and CUDA drivers (Games and IA)"
-sets["radeon"]="This set includes AMD Radeon software (Games and IA)"
 sets["development"]="This set includes common development tools, PyCharm Community Edition, R and Wireshark."
 sets["games"]="This set includes open source games, Heroic Launcher for Epic/GOG/Amazon games, and Steam."
 sets["matroska"]="This set includes video editing utilities for multiple formats including Matroska"
@@ -75,13 +102,7 @@ install_packages() {
   local packages=()
 
   case "$set_name" in
-    "nvidia")
-      packages=(akmod-nvidia cuda-toolkit nvidia-container-toolkit nvidia-gds)
-      ;;
-    "radeon")
-      packages=(amdgpu-dkms rocm)
-      ;;
-    "development")
+}    "development")
       packages=(code pycharm-community pycharm-community-doc pycharm-community-plugins R wireshark)
       ;;
     "games")
@@ -111,10 +132,7 @@ install_packages() {
     echo "$set_name installation successful."
 
     # Run additional commands after set installation (if needed)
-    if [ "$set_name" == "nvidia" ]; then
-      echo "Completing NVIDIA packages setup..."
-      dnf -y module install nvidia-driver:latest-dkms
-    elif  [ "$set_name" == "development" ]; then
+    if  [ "$set_name" == "development" ]; then
       echo "Completing development packages setup..."
       flatpak install -y flathub org.kde.kommit
     elif [ "$set_name" == "games" ]; then

@@ -9,13 +9,12 @@ fi
 # Capture the output of the logname command
 USER=$(logname)
 
-# Associative array to store set names and explanations
-declare -A sets
-sets["development"]="This set includes common development tools, PyCharm Community Edition, RStudio and Wireshark."
-sets["games"]="This set includes open source games, Heroic Launcher for Epic/GOG/Amazon games, and Steam."
-sets["matroska"]="This set includes video editing utilities for multiple formats including Matroska"
-sets["virt"]="This set includes RedHat Virtualization via Qemu and VirtualBox"
-sets["k3b"]="This set includes K3b and CD/DVD burning utilities"
+# Prompt user to select GPU type
+echo "Please select your GPU:"
+echo "1) NVIDIA"
+echo "2) AMD Radeon"
+echo "3) Skip GPU installation"
+read -p "Enter your choice [1-3]: " gpu_choice
 
 # Function to add repositories
 add_repositories() {
@@ -45,6 +44,39 @@ add_repositories() {
   echo "Adding Flathub..."
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
+
+# Function to install GPU drivers
+install_gpu_drivers() {
+  if [ "$gpu_choice" -eq 1 ]; then
+    echo "Installing NVIDIA drivers and CUDA..."
+    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
+    curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+    dnf -y module install --best --allowerasing nvidia-driver:latest-dkms
+    dnf -y install cuda-toolkit nvidia-container-toolkit nvidia-gds
+    echo "NVIDIA drivers and CUDA installed successfully."
+
+  elif [ "$gpu_choice" -eq 2 ]; then
+    echo "Installing AMD Radeon drivers..."
+    dnf -y install https://repo.radeon.com/amdgpu-install/6.1.2/rhel/9.4/amdgpu-install-6.1.60102-1.el9.noarch.rpm
+    dnf -y install --best --allowerasing amdgpu-dkms rocm
+    usermod -aG render,video $USER
+    echo "AMD Radeon drivers installed successfully."
+
+  elif [ "$gpu_choice" -eq 3 ]; then
+    echo "Skipping GPU installation."
+  else
+    echo "Invalid choice. Exiting."
+    exit 1
+  fi
+}
+
+# Associative array to store set names and explanations
+declare -A sets
+sets["development"]="This set includes common development tools, PyCharm Community Edition, RStudio and Wireshark."
+sets["games"]="This set includes open source games, Heroic Launcher for Epic/GOG/Amazon games, and Steam."
+sets["matroska"]="This set includes video editing utilities for multiple formats including Matroska"
+sets["virt"]="This set includes RedHat Virtualization via Qemu and VirtualBox"
+sets["k3b"]="This set includes K3b and CD/DVD burning utilities"
 
 # Function to install a set of packages
 install_packages() {
@@ -125,6 +157,9 @@ dnf update -y
 # Add repositories and run commands before package selection
 add_repositories
 dnf install --nogpgcheck -y slack-repo
+
+# Run the GPU driver installation
+install_gpu_drivers
 
 # Initial installation
 echo "Installing software for user: $USER"

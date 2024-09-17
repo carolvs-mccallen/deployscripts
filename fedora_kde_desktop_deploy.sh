@@ -116,7 +116,7 @@ install_packages() {
     # Run additional commands after set installation (if needed)
     if [ "$set_name" == "games" ]; then
       echo "Completing game packages setup..."
-      su -c "setsebool -P allow_execheap 1"
+      setsebool -P allow_execheap 1
     elif [ "$set_name" == "virt" ]; then
       echo "Completing virtualization packages setup..."
       usermod -aG vboxusers $USER

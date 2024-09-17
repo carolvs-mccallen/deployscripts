@@ -124,7 +124,7 @@ install_packages() {
     elif [ "$set_name" == "games" ]; then
       echo "Completing game packages setup..."
       flatpak install -y flathub com.viewizard.AstroMenace org.frozen_bubble.frozen-bubble com.github.opentyrian.OpenTyrian org.scummvm.ScummVM org.supertuxproject.SuperTux net.supertuxkart.SuperTuxKart
-      su -c "setsebool -P allow_execheap 1"
+      setsebool -P allow_execheap 1
     elif [ "$set_name" == "matroska" ]; then
       echo "Completing Matroska packages setup..."
       flatpak install -y flathub fr.handbrake.ghb org.bunkus.mkvtoolnix-gui

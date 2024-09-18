@@ -33,6 +33,8 @@ add_repositories() {
   rpm --import https://dl.google.com/linux/linux_signing_key.pub
   echo "Adding Heroic Launcher repository..."
   dnf copr enable -y atim/heroic-games-launcher
+  echo "Adding Kubernetes repository"
+  echo -e "[kubernetes]\nname=Kubernetes\nbaseurl=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/\nenabled=1\ngpgcheck=1\ngpgkey=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/repodata/repomd.xml.key" > /etc/yum.repos.d/kubernetes.repo
   echo "Adding Microsoft VSCode and Edge repositories..."
   rpm --import https://packages.microsoft.com/keys/microsoft.asc
   dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/vscode
@@ -151,7 +153,7 @@ echo "Installing software for user: $USER"
 echo "Updating package repository and installing initial packages..."
 dnf -y update
 dnf -y install https://github.com/jgraph/drawio-desktop/releases/download/v24.7.8/drawio-x86_64-24.7.8.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm
-dnf -y install --best --allowerasing arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg gcc-go gnupg2-smime golang-bin google-carlito-fonts google-crosextra-caladea-fonts htop hyphen-en hyphen-es innoextract kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent kubernetes-client libcurl-devel libxml2-devel lzma microsoft-edge-stable mythes mythes-en mythes-es neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl podman podman-docker pstoedit python3-pip thunderbird tracker unrar vim-enhanced xkill
+dnf -y install --best --allowerasing arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg gcc-go gnupg2-smime golang-bin google-carlito-fonts google-crosextra-caladea-fonts htop hyphen-en hyphen-es innoextract kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent kubectl libcurl-devel libxml2-devel lzma microsoft-edge-stable mythes mythes-en mythes-es neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl podman podman-docker pstoedit python3-pip thunderbird tracker unrar vim-enhanced xkill
 flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync md.obsidian.Obsidian com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.slack.Slack com.spotify.Client org.telegram.desktop
 echo "Applying automatic theme selection for Flatpak apps"
 flatpak override --filesystem=xdg-config/gtk-3.0:ro
@@ -163,7 +165,7 @@ rm Popcorn-Time-0.5.1-linux64-0.44.5.zip
 wget -O /opt/popcorntime/popcorn.png https://github.com/carolvs-mccallen/deployscripts/blob/main/icon.png?raw=true
 ln -sf /opt/popcorntime/Popcorn-Time /usr/bin/Popcorn-Time
 echo "Creating app list"
-echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
+echo -e "[Desktop Entry]\nVersion=0.51\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
 dnf -y remove dragon kmail libreoffice-* open-vm-tools* virtualbox-guest-additions
 curl -s https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch 256 -o /usr/bin/neofetch
 echo -e "# Starts terminal with neofetch at the top\nneofetch" >> /home/$USER/.bashrc

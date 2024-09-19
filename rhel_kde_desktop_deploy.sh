@@ -102,7 +102,7 @@ install_packages() {
   local packages=()
 
   case "$set_name" in
-}    "development")
+    "development")
       packages=(code pycharm-community pycharm-community-doc pycharm-community-plugins R wireshark)
       ;;
     "games")

@@ -29,6 +29,8 @@ add_repositories() {
   echo "Adding Brave Browser repository..."
   rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
   dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+  echo "Adding GitHub CLI repository..."
+  dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
   echo "Adding Google Chrome repository..."
   rpm --import https://dl.google.com/linux/linux_signing_key.pub
   echo "Adding Heroic Launcher repository..."
@@ -154,7 +156,7 @@ echo "Updating package repository and installing initial packages..."
 dnf -y update
 dnf -y groupinstall "KDE Plasma Workspaces" "KDE Applications" "base-x" "VideoLAN Client"
 dnf -y install https://github.com/jgraph/drawio-desktop/releases/download/v24.7.8/drawio-x86_64-24.7.8.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm
-dnf -y install --best --allowerasing arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg gcc-go gnupg2-smime golang-bin htop innoextract kate kamoso kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent kubectl libcurl-devel libxml2-devel lzma microsoft-edge-stable neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl podman-docker pstoedit python3-pip thunderbird tracker unrar vim-enhanced xkill
+dnf -y install --best --allowerasing arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg gcc-go gh gnupg2-smime golang-bin htop innoextract kate kamoso kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent kubectl libcurl-devel libdrm-devel libpciaccess-devel libxml2-devel lzma microsoft-edge-stable neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl podman-docker pstoedit python3-pip thunderbird tracker unrar vim-enhanced xkill
 flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync md.obsidian.Obsidian com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.slack.Slack com.spotify.Client org.telegram.desktop
 echo "Applying automatic theme selection for Flatpak apps"
 flatpak override --filesystem=xdg-config/gtk-3.0:ro

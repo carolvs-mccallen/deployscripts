@@ -105,7 +105,7 @@ install_packages() {
 
   case "$set_name" in
     "development")
-      packages=(code pycharm-community pycharm-community-doc pycharm-community-plugins R wireshark)
+      packages=(ansible code pycharm-community pycharm-community-doc pycharm-community-plugins R wireshark)
       ;;
     "games")
       packages=(heroic-games-launcher-bin lutris steam)
@@ -137,6 +137,7 @@ install_packages() {
     if  [ "$set_name" == "development" ]; then
       echo "Completing development packages setup..."
       flatpak install -y flathub org.kde.kommit
+      pip install ansible-creator --no-input
     elif [ "$set_name" == "games" ]; then
       echo "Completing game packages setup..."
       flatpak install -y flathub com.viewizard.AstroMenace org.frozen_bubble.frozen-bubble com.github.opentyrian.OpenTyrian org.scummvm.ScummVM org.supertuxproject.SuperTux net.supertuxkart.SuperTuxKart
@@ -167,10 +168,10 @@ echo "Installing software for user: $USER"
 echo "Updating package repository and installing initial packages..."
 dnf update -y
 dnf groupinstall -y "KDE Plasma Workspaces" "KDE Applications" "base-x" "VideoLAN Client"
-# systemctl disable gdm
-# systemctl enable sddm
+systemctl disable gdm
+systemctl enable sddm
 dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v24.7.8/drawio-x86_64-24.7.8.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm
-dnf install --best --allowerasing -y arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg gcc-go gh gnupg2-smime golang-bin google-chrome-stable htop innoextract kate kamoso kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent libcurl-devel libdrm-devel libpciaccess-devel libxml2-devel lzma microsoft-edge-stable neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl podman-docker pstoedit python3-pip thunderbird tracker unrar vim-enhanced xkill
+dnf install --best --allowerasing -y arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg gcc-go gh gnupg2-smime golang-bin google-chrome-stable htop httpd-tools innoextract kate kamoso kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent libcurl-devel libdrm-devel libpciaccess-devel libxml2-devel lzma microsoft-edge-stable neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl podman-docker pstoedit python3-pip thunderbird tracker unrar vim-enhanced xkill
 flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync md.obsidian.Obsidian com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.slack.Slack com.spotify.Client org.telegram.desktop
 echo "Applying automatic theme selection for Flatpak apps"
 flatpak override --filesystem=xdg-config/gtk-3.0:ro
@@ -185,6 +186,9 @@ echo "Creating app list"
 echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
 dnf remove -y dragon kmail open-vm-tools* virtualbox-guest-additions
 echo -e "# Starts terminal with neofetch at the top\nneofetch" >> /home/$USER/.bashrc
+echo "Installing Ollama"
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull wizardlm2
 echo "Adding Python langchain modules"
 pip install langchain-community
 

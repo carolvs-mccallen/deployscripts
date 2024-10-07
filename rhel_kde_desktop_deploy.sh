@@ -48,6 +48,8 @@ add_repositories() {
   rpm --import https://dl.google.com/linux/linux_signing_key.pub
   echo "Adding Heroic Launcher repository..."
   dnf copr enable -y atim/heroic-games-launcher
+  echo "Adding Kubernetes repository"
+  echo -e "[kubernetes]\nname=Kubernetes\nbaseurl=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/\nenabled=1\ngpgcheck=1\ngpgkey=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/repodata/repomd.xml.key" > /etc/yum.repos.d/kubernetes.repo
   echo "Adding Microsoft VSCode and Edge repositories..."
   rpm --import https://packages.microsoft.com/keys/microsoft.asc
   dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/vscode
@@ -171,8 +173,8 @@ dnf groupinstall -y "KDE Plasma Workspaces" "KDE Applications" "base-x" "VideoLA
 systemctl disable gdm
 systemctl enable sddm
 dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v24.7.8/drawio-x86_64-24.7.8.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm
-dnf install --best --allowerasing -y arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg gcc-go gh gnupg2-smime golang-bin google-chrome-stable htop httpd-tools innoextract kate kamoso kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent libcurl-devel libdrm-devel libpciaccess-devel libxml2-devel lzma microsoft-edge-stable neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl podman-docker pstoedit python3-pip thunderbird tracker unrar vim-enhanced xkill
-flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync md.obsidian.Obsidian com.plexamp.Plexamp tv.plex.PlexDesktop org.signal.Signal com.slack.Slack com.spotify.Client org.telegram.desktop
+dnf install --best --allowerasing -y arj azure-cli brave-browser cabextract deja-dup digikam dnf-utils dpkg gcc-go gh gnupg2-smime golang-bin htop httpd-tools innoextract kate kamoso kdiff3 kdiskmark kleopatra krename krusader ksystemlog ktorrent kubectl libcurl-devel libdrm-devel libpciaccess-devel libxml2-devel lzma microsoft-edge-stable neofetch nextcloud-client nextcloud-client-dolphin openssl-devel okteta perl podman-docker pstoedit python3-pip thunderbird tracker unrar vim-enhanced xkill
+flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.dropbox.Client com.bitwarden.desktop com.discordapp.Discord org.gimp.GIMP org.kde.kget org.kde.kid3 org.kde.krita org.libreoffice.LibreOffice nz.mega.MEGAsync md.obsidian.Obsidian com.plexamp.Plexamp tv.plex.PlexDesktop io.podman_desktop.PodmanDesktop org.signal.Signal com.slack.Slack com.spotify.Client org.telegram.desktop
 echo "Applying automatic theme selection for Flatpak apps"
 flatpak override --filesystem=xdg-config/gtk-3.0:ro
 echo "Installing Popcorn Time..."
@@ -191,6 +193,8 @@ curl -fsSL https://ollama.com/install.sh | sh
 ollama pull wizardlm2
 echo "Adding Python langchain modules"
 pip install langchain-community
+echo "Installing Podman Compose"
+pip install podman-compose
 
 # Check if the initial installation was successful
 if [ $? -eq 0 ]; then

@@ -1,0 +1,8 @@
+[slack]
+name=Slack
+baseurl=https://packagecloud.io/slacktechnologies/slack/fedora/21/$basearch
+gpgcheck=1
+enabled=1
+gpgkey=https://slack.com/gpg/slack_pubkey_20260921.gpg
+sslverify=1
+metadata_expire=300

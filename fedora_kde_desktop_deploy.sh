@@ -84,7 +84,7 @@ install_packages() {
       packages=(displaylink)
       ;;
     "games")
-      packages=(astromenace frozen-bubble heroic-games-launcher-bin lutris scummvm scummvm-data scummvm-tools steam supertux supertuxkart supertuxkart-data xpadneo)
+      packages=(astromenace faugus-launcher frozen-bubble heroic-games-launcher-bin lutris scummvm scummvm-data scummvm-tools steam supertux supertuxkart supertuxkart-data xpadneo)
       ;;
     "k3b")
       packages=(cdrskin k3b normalize sox transcode vcdimager xorriso)
@@ -121,6 +121,7 @@ install_packages() {
       ;;
     "games")
       echo "Adding the Heroic Games Launcher and Steam repositories..."
+      dnf copr enable -y faugus/faugus-launcher
       dnf copr enable -y atim/heroic-games-launcher
       dnf config-manager enable rpmfusion-nonfree-steam
       dnf copr enable -y atim/xpadneo

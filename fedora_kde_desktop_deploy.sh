@@ -12,9 +12,8 @@ USER=$(logname)
 # Prompt user to select GPU type
 echo "Please select your GPU:"
 echo "1) NVIDIA"
-echo "2) AMD Radeon"
-echo "3) Skip GPU installation"
-read -p "Enter your choice [1-3]: " gpu_choice
+echo "2) Skip GPU installation"
+read -p "Enter your choice [1-2]: " gpu_choice
 
 # Function to add repositories
 add_repositories() {
@@ -22,50 +21,36 @@ add_repositories() {
   echo "Installing RPMFusion..."
   dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
   echo "Adding Brave Browser repository..."
-  dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
   rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
-  echo "Adding Microsoft VSCode and Edge repositories..."
-  rpm --import https://packages.microsoft.com/keys/microsoft.asc
-  dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/vscode
-  dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/edge
+  dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
   echo "Adding GitHub CLI repository..."
-  dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
-  echo "Adding Heroic Launcher repository..."
-  dnf copr enable -y atim/heroic-games-launcher
-  echo "Adding Slack repository..."
-  rpm --import https://slack.com/gpg/slack_pubkey_20230710.gpg
-  dnf copr enable -y jdoss/slack-repo
-  echo "Adding PyCharm Community repository..."
-  dnf copr enable -y phracek/PyCharm
+  dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
   echo "Adding Google Chrome repository..."
-  dnf config-manager --set-enabled google-chrome
-  echo "Adding Steam (RPMFusion) repository..."
-  dnf config-manager --set-enabled rpmfusion-nonfree-steam
-  echo "Adding Nvidia Drivers (RPMFusion) repository..."
-  dnf config-manager --set-enabled rpmfusion-nonfree-nvidia-driver
-  echo "Adding Flathub..."
+  dnf config-manager enable google-chrome
+  echo "Adding Slack repository..."
+  rpm --import https://slack.com/gpg/slack_pubkey_20260921.gpg
+  dnf config-manager addrepo --from-repofile=https://raw.githubusercontent.com/carolvs-mccallen/deployscripts/refs/heads/main/slack.repo
+  echo "Adding TeamViewer repository..."
+  rpm --import https://linux.teamviewer.com/pubkey/currentkey.asc
+  dnf config-manager addrepo --from-repofile=https://raw.githubusercontent.com/carolvs-mccallen/deployscripts/refs/heads/main/teamviewer.repo
+  echo "Adding Flatpark and Flathub repositories..."
+  flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
 # Function to install GPU drivers
 install_gpu_drivers() {
   if [ "$gpu_choice" -eq 1 ]; then
+    echo "Adding NVIDIA repositories"
+    dnf config-manager addrepo --from-repofile=https://developer.download.nvidia.com/compute/cuda/repos/fedora$(rpm -E %fedora)/x86_64/cuda-fedora$(rpm -E %fedora).repo
+    dnf config-manager addrepo --from-repofile=https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
     echo "Installing NVIDIA drivers and CUDA..."
-    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
-    curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | tee /etc/yum.repos.d/nvidia-container-toolkit.repo
-    dnf -y module install --best --allowerasing nvidia-driver:latest-dkms
-    dnf -y install cuda-toolkit nvidia-container-toolkit nvidia-gds
+    dnf -y install cuda-toolkit kernel-devel-matched kernel-headers kmod-nvidia-open-dkms nvidia-container-toolkit nvidia-gds nvidia-open nvidia-driver nvidia-driver-cuda
     echo "NVIDIA drivers and CUDA installed successfully."
 
   elif [ "$gpu_choice" -eq 2 ]; then
-    echo "Installing AMD Radeon drivers..."
-    dnf -y install https://repo.radeon.com/amdgpu-install/6.1.2/rhel/9.4/amdgpu-install-6.1.60102-1.el9.noarch.rpm
-    dnf -y install --best --allowerasing amdgpu-dkms rocm
-    usermod -aG render,video $USER
-    echo "AMD Radeon drivers installed successfully."
-
-  elif [ "$gpu_choice" -eq 3 ]; then
     echo "Skipping GPU installation."
+
   else
     echo "Invalid choice. Exiting."
     exit 1
@@ -74,11 +59,14 @@ install_gpu_drivers() {
 
 # Associative array to store set names and explanations
 declare -A sets
+sets["artcraft"]="This set replaces LibreOffice with the ArtCraft Office utilities."
 sets["development"]="This set includes common development tools, PyCharm Community Edition, RStudio and Wireshark."
+sets["displaylink"]="This set installs DisplayLink software and drivers."
 sets["games"]="This set includes open source games, Heroic Launcher for Epic/GOG/Amazon games, and Steam."
+sets["k3b"]="This set includes K3b and CD/DVD burning utilities"
 sets["matroska"]="This set includes video editing utilities for multiple formats including Matroska"
 sets["virt"]="This set includes RedHat Virtualization via Qemu and VirtualBox"
-sets["k3b"]="This set includes K3b and CD/DVD burning utilities"
+
 
 # Function to install a set of packages
 install_packages() {
@@ -86,24 +74,60 @@ install_packages() {
   local packages=()
 
   case "$set_name" in
+    "artcraft")
+      packages=(wordcraft deckcraft gridcraft pdfcraft)
+      ;;
     "development")
-      packages=(code @development-tools kommit pycharm-community pycharm-community-doc pycharm-community-plugins R rstudio-desktop wireshark)
+      packages=(codium @development-tools kommit pycharm-community pycharm-community-doc pycharm-community-plugins R rstudio-desktop wireshark)
+      ;;
+    "displaylink")
+      packages=(displaylink)
       ;;
     "games")
-      packages=(astromenace frozen-bubble heroic-games-launcher-bin lutris scummvm scummvm-data scummvm-tools steam supertux supertuxkart supertuxkart-data)
+      packages=(astromenace frozen-bubble heroic-games-launcher-bin lutris scummvm scummvm-data scummvm-tools steam supertux supertuxkart supertuxkart-data xpadneo)
+      ;;
+    "k3b")
+      packages=(cdrskin k3b normalize sox transcode vcdimager xorriso)
       ;;
     "matroska")
       packages=(handbrake handbrake-gui mediainfo-gui mkvtoolnix-gui)
       ;;
     "virt")
-      packages=(akmod-VirtualBox kmod-VirtualBox qemu VirtualBox @Virtualization)
-      ;;
-    "k3b")
-      packages=(cdrskin k3b normalize sox transcode vcdimager xorriso)
+      packages=(qemu VirtualBox-7.2 @virtualization)
       ;;
     *)
       echo "Invalid set name. Exiting."
       exit 1
+      ;;
+  esac
+
+  # Add only the repositories required by the selected set
+  case "$set_name" in
+    "artcraft")
+      echo "Adding the ArtCraft repository..."
+      dnf config-manager addrepo --from-repofile=https://getartcraft.com/rpm/artcraft.repo
+      echo "Removing LibreOffice packages..."
+      dnf remove -y @libreoffice libreoffice-core libreoffice-langpack-es libreoffice-help-es
+      ;;
+    "development")
+      echo "Adding the PyCharm, RStudio and VSCodium repositories..."
+      dnf copr enable -y phracek/PyCharm
+      dnf copr enable -y iucar/rstudio
+      dnf config-manager addrepo --from-repofile=https://raw.githubusercontent.com/carolvs-mccallen/deployscripts/refs/heads/main/vscodium.repo
+      ;;
+    "displaylink")
+      echo "Adding the DisplayLink repository..."
+      dnf copr enable -y crashdummy/Displaylink
+      ;;
+    "games")
+      echo "Adding the Heroic Games Launcher and Steam repositories..."
+      dnf copr enable -y atim/heroic-games-launcher
+      dnf config-manager enable rpmfusion-nonfree-steam
+      dnf copr enable -y atim/xpadneo
+      ;;
+    "virt")
+      echo "Adding the VirtualBox repository..."
+      dnf config-manager addrepo --from-repofile=https://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo
       ;;
   esac
 
@@ -137,7 +161,8 @@ install_flatpak_apps() {
   case "$choice" in
     [Yy]*)
       echo "Installing Flatpak apps..."
-      flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.bitwarden.desktop com.discordapp.Discord com.github.opentyrian.OpenTyrian com.plexamp.Plexamp tv.plex.PlexDesktop io.podman_desktop.PodmanDesktop org.signal.Signal com.spotify.Client com.github.eneshecan.WhatsAppForLinux io.github.JaGoLi.ytdl_gui
+      flatpak install flathub -y org.gtk.Gtk3theme.Breeze com.bitwarden.desktop com.discordapp.Discord com.jgraph.drawio.desktop com.github.opentyrian.OpenTyrian com.plexamp.Plexamp tv.plex.PlexDesktop io.podman_desktop.PodmanDesktop org.signal.Signal com.spotify.Client us.zoom.Zoom
+      flatpak install flatpark -y com.automattic.Beeper
       echo "Applying automatic theme selection for Flatpak apps"
       flatpak override --filesystem=xdg-config/gtk-3.0:ro
       ;;
@@ -150,36 +175,26 @@ install_flatpak_apps() {
   esac
 }
 
-# Running pre-requisite upgrade
+# Improve DNF performance
 echo "Improving DNF performance..."
 echo -e "#Improve DNF download speed and performance\nmax_parallel_downloads=10\nfastestmirror=True\ninstallonly_limit=2" >> /etc/dnf/dnf.conf
-echo "Running initial Fedora updates..."
-dnf update -y
 
 # Add repositories and run commands before package selection
 add_repositories
-dnf install --nogpgcheck -y slack-repo
 
 # Run the GPU driver installation
 install_gpu_drivers
+echo "Running initial Fedora updates..."
+dnf update -y
 
 # Initial installation
 echo "Installing software for user: $USER"
 echo "Updating package repository and installing initial packages..."
 dnf update -y
-dnf install -y https://github.com/jgraph/drawio-desktop/releases/download/v24.7.8/drawio-x86_64-24.7.8.rpm https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm https://zoom.us/client/latest/zoom_x86_64.rpm
-dnf install --best --allowerasing -y arj awesome-vim-colorschemes azure-cli brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dnf-utils dolphin-megasync dpkg dropbox falkon fprintd-devel gh gimp gimp-data-extras gimp-*-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-layer* gimp-lensfun gimp-*-masks gimp-resynthesizer gimp-save-for-web gimp-separate+ gimp-*-studio gimp-wavelet* gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiff3 kdiskmark kernel-devel kernel-headers kget kid3 kleopatra krename krita krusader ksystemlog ktorrent kubernetes-client lha libcurl-devel libdrm-devel libfprint-devel libpciaccess-devel libreoffice-langpack-es libreoffice-help-es libxml2-devel lshw lzma megasync microsoft-edge-stable mozilla-ublock-origin neofetch nextcloud-client nextcloud-client-dolphin nodejs-bash-language-server openssl-devel okteta perl podman-docker pstoedit python3-dnf-plugin-snapper python3-pip redhat-lsb-core slack snapper telegram-desktop thunderbird tracker unace unrar vim-enhanced vlc vlc-bittorrent vlc-extras xkill
-echo "Installing Popcorn Time..."
-wget https://github.com/popcorn-official/popcorn-desktop/releases/download/v0.5.1/Popcorn-Time-0.5.1-linux64.zip
-mkdir /opt/popcorntime
-unzip Popcorn-Time-0.5.1-linux64.zip -d /opt/popcorntime/
-rm Popcorn-Time-0.5.1-linux64.zip
-wget -O /opt/popcorntime/popcorn.png https://github.com/carolvs-mccallen/testground/blob/main/icon.png?raw=true
-ln -sf /opt/popcorntime/Popcorn-Time /usr/bin/Popcorn-Time
-echo "Creating app list"
-echo -e "[Desktop Entry]\nVersion=1.0\nType=Application\nTerminal=false\nName=Popcorn Time\nComment=Stream movies from the web\nExec=/usr/bin/Popcorn-Time\nIcon=/opt/popcorntime/popcorn.png\nCategories=AudioVideo;Player;Video" > /usr/share/applications/popcorntime.desktop
-dnf remove -y dragon virtualbox-guest-additions open-vm-tools* kmail
-echo -e "# Starts terminal with neofetch at the top\nneofetch" >> /home/$USER/.bashrc
+dnf install -y https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm
+dnf install --best --allowerasing -y arj awesome-vim-colorschemes azure-cli brave-browser btrfs-assistant btrfsmaintenance cabextract digikam dolphin-megasync dpkg dropbox falkon fastfetch fprintd-devel gh gimp gimp-data-extras gimp-fourier-plugin gimp-elsamuko gimp-*-filter gimp-help gimp-help-es gimp-*-masks gimp-resynthesizer gimp-*-studio gimpfx-foundry git git-core google-chrome-stable htop hunspell hunspell-es info innoextract kate kde-l10n-es kdiff3 kdiskmark kget kid3 kleopatra krename krita krusader ksystemlog ktorrent kubernetes-client lha libcurl-devel libdrm-devel libfprint-devel libpciaccess-devel libreoffice-langpack-es libreoffice-help-es libxml2-devel lshw lzma megasync mozilla-ublock-origin nextcloud-client nextcloud-client-dolphin nodejs-bash-language-server openssl-devel okteta perl podman-docker pstoedit python3-dnf-plugin-snapper python3-pip slack snapper teamviewer telegram-desktop tracker unace unrar vim-enhanced @vlc xkill
+dnf remove -y dragon @guest-desktop-agents
+echo -e "# Starts terminal with fastfetch at the top\nfastfetch" >> /home/$USER/.bashrc
 
 # Check if the initial installation was successful
 if [ $? -eq 0 ]; then
@@ -212,3 +227,4 @@ done
 
 # Install Flatpak apps
 install_flatpak_apps
+dnf clean all
